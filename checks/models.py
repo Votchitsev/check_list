@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Location(models.Model):
-    name = models.CharField(max_length=30, null=False)
+    name = models.CharField(max_length=30, null=False, verbose_name='Наименование района', unique=True)
 
     def __str__(self):
         return self.name
@@ -10,7 +10,7 @@ class Location(models.Model):
 
 class Object(models.Model):
     name = models.CharField(max_length=30, null=False)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='location')
 
     def __str__(self):
         return self.name

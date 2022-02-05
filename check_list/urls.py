@@ -16,6 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from checks.views import start_view, get_objects_view, LocationFormView, LocationListView, delete_location
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', start_view),
+    path('objects/', get_objects_view),
+    path('locations/', LocationListView.as_view()),
+    path('add_location/', LocationFormView.as_view()),
+    path('locations/delete/', delete_location),
 ]

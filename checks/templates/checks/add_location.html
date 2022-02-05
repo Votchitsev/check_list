@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление района</title>
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+</head>
+<body>
+<div class="background">
+            <div class="head">
+                <div class="head__item">
+                    <a href="http://127.0.0.1:8000/">Главная</a>
+                    </div>
+                <div class="head__item head__item_chosen">
+                    <a href="http://127.0.0.1:8000/locations/">Муниципалитеты</a>
+                    </div>
+                <div class="head__item">Объекты</div>
+                <div class="head__item">Проверки</div>
+            </div>
+            <form class="create__location" action="http://127.0.0.1:8000/add_location/" method="post">{% csrf_token %}
+                    {{ form }}<br>
+        <input type="submit" value="Добавить">
+        <button type="reset">Отменить</button>
+            </form>
+            </div>
+</body>
+</html>
