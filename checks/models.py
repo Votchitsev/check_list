@@ -13,7 +13,7 @@ class Object(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='location')
 
     def __str__(self):
-        return self.name
+        return f"{self.name} {self.location}"
 
 
 class Question(models.Model):
@@ -33,7 +33,7 @@ class Grade(models.Model):
 
 class ControlEvent(models.Model):
     date = models.DateField()
-    object = models.OneToOneField(Object, on_delete=models.CASCADE)
+    object = models.ForeignKey(Object, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.date} {self.object}"

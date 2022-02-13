@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+{% extends "checks/index.html" %}
+{% load static %}
+{% block content %}
+<div class="add_item"><a href="{% url 'object-create' %}">Добавить объект</a></div>
+            <div class="content_list">
+                {% for object in objects %}
+                <div class="content_list__item">
+                    <div class="content_list__item__name">{{object.name}}</div>
+                    <div class="content_list__item__name">{{object.location}}</div>
+                    <div class="content_list__item__delete"><a href="{% url 'object-delete' %}?obj_id={{object.id}}">удалить</a></div>
+                </div>
+                {% endfor %}
+            </div>
+{% endblock %}

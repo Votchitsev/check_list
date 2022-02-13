@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+{% extends "checks/index.html" %}
+{% load static %}
+{% block content %}
+    <div class="add_item"><a href="{% url 'location-create' %}">Добавить муниципалитет</a></div>
+    <div class="content_list">
+        {% for location in locations %}
+            <div class="content_list__item">
+                    <div class="content_list__item__name"><a href="{% url 'location' location.id %}">{{location}}</a></div>
+                    <div class="content_list__item__delete"><a href="{% url 'location-delete' %}?location_id={{location.id}}">удалить</a></div>
+            </div>
+        {% endfor %}
+            </div>
+        {% endblock %}
+

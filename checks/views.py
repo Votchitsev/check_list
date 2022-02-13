@@ -1,47 +1,44 @@
-from django.shortcuts import render, redirect
+from django.core.exceptions import ValidationError
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView
+from django.urls import reverse
 
-from checks.forms import CreateLocationForm
-from checks.models import Object, Location
+from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
+from checks.models import Object, Location, ControlEvent, Question, Grade, Result
 
+
+# START PAGE
 
 def start_view(request):
+    context = {'title': 'Главная'}
+    return render(request, context=context, template_name='checks/index.html')
 
-    return render(request, template_name='checks/index.html')
 
-
-def get_objects_view(request):
-
-    objects_list = Object.objects.all()
-
-    context = {'objects': objects_list}
-
-    return render(request, context=context, template_name="checks/objects.html")
+# LOCATION_VIEWS
 
 
 class LocationListView(ListView):
     model = Location
-    template_name = 'checks/locations.html'
+    template_name = 'checks/location.html'
+    context_object_name = 'locations'
 
-    def get(self, *args, **kwargs):
-        location_list = self.get_queryset()
-        context = {'locations': location_list}
-        return render(self.request, context=context, template_name='checks/locations.html')
+    def get_context_data(self, **kwargs):
+        context = super(LocationListView, self).get_context_data(**kwargs)
+        context['title'] = 'Муниципалитеты'
+        return context
 
 
 def delete_location(request):
-    location_for_delete = request.GET['location_id']
-    Location.objects.filter(id=location_for_delete).delete()
+    Location.objects.filter(id=request.GET['location_id']).delete()
     location_list = Location.objects.all()
     context = {'locations': location_list}
-    return render(request, context=context, template_name='checks/locations.html')
+    return render(request, context=context, template_name='checks/location.html')
 
 
 class LocationFormView(View):
-
     form_class = CreateLocationForm
-    template_name = 'checks/add_location.html'
+    template_name = 'checks/create_location.html'
 
     def get(self, request):
         form = self.form_class()
@@ -53,7 +50,141 @@ class LocationFormView(View):
         if form.is_valid():
             name = form.cleaned_data['name']
             Location.objects.create(name=name)
-            return redirect('http://127.0.0.1:8000/locations/')
+            return redirect(reverse('location-list'))
         else:
             context = {'form': form}
             return render(request, context=context, template_name=self.template_name)
+
+
+class LocationObjectsListView(ListView):
+    model = Object
+    template_name = 'checks/object.html'
+    context_object_name = 'objects'
+
+    def get_queryset(self):
+        location = get_object_or_404(Location, id=self.kwargs['id'])
+        return Object.objects.filter(location=location)
+
+
+#   OBJECTS_VIEWS
+
+def get_objects_view(request):
+    objects_list = Object.objects.all()
+    context = {'objects': objects_list,
+               'title': 'Объекты'}
+    return render(request, context=context, template_name="checks/object.html")
+
+
+def delete_object_view(request):
+    Object.objects.filter(id=request.GET['obj_id']).delete()
+    return redirect(reverse('object-list'))
+
+
+class ObjectFormView(View):
+    form_class = CreateObjectForm
+    template_name = 'checks/create_object.html'
+
+    def get(self, request):
+        form = self.form_class()
+        context = {'form': form}
+        return render(request, context=context, template_name=self.template_name)
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            location = form.cleaned_data['location']
+            Object.objects.create(name=name, location=location)
+            return redirect(reverse('object-list'))
+        else:
+            context = {'form': form}
+            return render(request, context=context, template_name='checks/create_location')
+
+
+#   CONTROL_EVENT_VIEWS
+
+class ControlEventListView(ListView):
+    model = ControlEvent
+    template_name = 'checks/control_event.html'
+
+    def get(self, *args, **kwargs):
+        control_events_list = self.get_queryset()
+        context = {'control_events': control_events_list}
+        return render(self.request, context=context, template_name=self.template_name)
+
+
+def delete_control_event_view(request):
+    control_event_for_delete = request.GET['control_event']
+    ControlEvent.objects.filter(id=control_event_for_delete).delete()
+    return redirect(reverse('control-event-list'))
+
+
+class ControlEventFormView(View):
+    form_class = ControlEventForm
+    template_name = 'checks/control_event_create.html'
+
+    def get(self, request):
+        form = self.form_class()
+        context = {'control_event_form': form}
+        return render(request=request, context=context, template_name=self.template_name)
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            date = form.cleaned_data['date']
+            obj = form.cleaned_data['object']
+            ControlEvent.objects.create(date=date, object=obj)
+            return redirect(reverse('control-event-list'))
+        else:
+            context = {'control_event_form': form}
+            return render(request, context=context, template_name=self.template_name)
+
+
+class CheckListFormView(View):
+    form_class = CheckListForm
+    template_name = 'checks/control_event_result.html'
+
+    def get(self, request, control_event_id):   # TODO add count result score
+        control_event = ControlEvent.objects.filter(id=control_event_id)[0]
+        form = self.form_class(initial={'control_event': control_event})
+        result = Result.objects.filter(control_event=control_event_id)
+        context = {
+            'check_list_form': form,
+            'result': result,
+            'control_event_id': control_event_id,
+            'object': control_event.object,
+            'date': control_event.date,
+        }
+        return render(request=request, context=context, template_name=self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        control_event_id = self.kwargs['control_event_id']
+        control_event = ControlEvent.objects.filter(id=control_event_id)[0]
+        if form.is_valid():
+            new_result_object = Result(
+                control_event=control_event,
+                question=form.cleaned_data['question'],
+                grade=form.cleaned_data['grade']
+            )
+            new_result_object.save()
+            return redirect(reverse('control-event', kwargs={'control_event_id': control_event_id}))
+        else:
+            result = Result.objects.filter(control_event=control_event_id)
+            context = {
+                'check_list_form': form,
+                'result': result,
+                'control_event_id': control_event_id,
+                'object': control_event.object,
+                'date': control_event.date,
+            }
+            return render(request, context=context, template_name=self.template_name)
+
+
+def delete_check_list_view(request):
+    Result(id=request.GET['control_event_position_id']).delete()
+    return redirect(reverse('control-event', kwargs={
+        'control_event_id': request.GET['control_event_id']
+    }))

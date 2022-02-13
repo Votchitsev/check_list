@@ -1,0 +1,26 @@
+{% extends "checks/index.html" %}
+{% load static %}
+{% block content %}
+    <div class="check_list">
+                <div class="check_list__information">
+                    <div class="check_list__information__object">
+                        {{object}}
+                    </div>
+                    <div class="check_list__information__object">
+                        {{date}}
+                    </div>
+                </div>
+                {% for r in result %}
+                <div class="check_list__position">
+                    <div class="check_list__position__question">{{r.question}}</div>
+                    <div class="check_list__position__grade">{{r.grade}}</div>
+                    <div class="check_list__position__delete"><a href="{% url 'delete-check-list-position' %}?control_event_position_id={{r.id}}&control_event_id={{control_event_id}}">удалить</a> </div>
+                    </div>
+                {% endfor %}
+                <form class="check-list-form" action="{% url 'control-event' control_event_id %}" method="post">
+                        {% csrf_token %}
+                        {{check_list_form}}
+                    <input type="submit" value="Добавить">
+                </form>
+            </div>
+{% endblock %}

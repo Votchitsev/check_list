@@ -4,20 +4,28 @@
 
 <html lang='ru'>
 	<head>
-	<link href="{% static "/css/style.css" %}" rel="stylesheet">
+	    <link href="{% static "/css/style.css" %}" rel="stylesheet">
+        <title>{{title}}</title>
 	</head>
 	<body>
 	    <div class="background">
+            {% block head %}
             <div class="head">
                 <div class="head__item">
-                    <a href="#">Главная</a>
+                    <a href="{% url 'start_page' %}">Главная</a>
                     </div>
                 <div class="head__item">
-                    <a href="http://127.0.0.1:8000/locations/">Муниципалитеты</a>
+                    <a href="{% url 'location-list' %}">Муниципалитеты</a>
                     </div>
-                <div class="head__item">Объекты</div>
-                <div class="head__item">Проверки</div>
+                <div class="head__item">
+                    <a href="{% url 'object-list' %}">Объекты</a></div>
+                <div class="head__item">
+                    <a href="{% url 'control-event-list' %}">Проверки</a>
+                </div>
             </div>
+            {% endblock %}
+            {% block content %}
+            {% endblock %}
 	    </div>
 	</body>
 </html>
