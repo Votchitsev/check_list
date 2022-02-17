@@ -6,6 +6,7 @@ from django.urls import reverse
 
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result
+from checks.servises.count_score_of_control_event import count_score
 
 
 # START PAGE
@@ -150,12 +151,14 @@ class CheckListFormView(View):
         control_event = ControlEvent.objects.filter(id=control_event_id)[0]
         form = self.form_class(initial={'control_event': control_event})
         result = Result.objects.filter(control_event=control_event_id)
+        score = count_score(control_event_id=control_event_id)
         context = {
             'check_list_form': form,
             'result': result,
             'control_event_id': control_event_id,
             'object': control_event.object,
             'date': control_event.date,
+            'score': score,
         }
         return render(request=request, context=context, template_name=self.template_name)
 
