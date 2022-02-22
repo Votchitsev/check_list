@@ -14,4 +14,8 @@ def count_score(control_event_id):
         elif i.grade.name == 'No':
             score_of_checked_questions += i.question.significance_score
 
-    return int((score / score_of_checked_questions) * 100)
+    try:
+        return int((score / score_of_checked_questions) * 100)
+    except ZeroDivisionError:
+        return 0
+
