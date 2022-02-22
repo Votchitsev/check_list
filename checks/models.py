@@ -32,8 +32,8 @@ class Grade(models.Model):
 
 
 class ControlEvent(models.Model):
-    date = models.DateField()
-    object = models.ForeignKey(Object, on_delete=models.CASCADE)
+    date = models.DateField(verbose_name='Дата проверки')
+    object = models.ForeignKey(Object, on_delete=models.CASCADE, verbose_name='Объект')
 
     def __str__(self):
         return f"{self.date} {self.object}"
@@ -41,8 +41,8 @@ class ControlEvent(models.Model):
 
 class Result(models.Model):
     control_event = models.ForeignKey(ControlEvent, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Вопрос')
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE, verbose_name='Оценка')
 
     class Meta:
         unique_together = [['control_event', 'question', 'grade']]

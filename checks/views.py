@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result
@@ -11,10 +13,17 @@ from checks.servises.count_score_of_control_event import count_score
 
 # START PAGE
 
-def start_view(request):
-    context = {'title': 'Главная'}
-    return render(request, context=context, template_name='checks/index.html')
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('start_page'))
 
+
+def start_view(request):
+    # user = request.user.username
+    context = {
+        'title': 'Главная',
+    }
+    return render(request, context=context, template_name='checks/index.html')
 
 # LOCATION_VIEWS
 
@@ -30,6 +39,7 @@ class LocationListView(ListView):
         return context
 
 
+@login_required
 def delete_location(request):
     Location.objects.filter(id=request.GET['location_id']).delete()
     location_list = Location.objects.all()
@@ -76,6 +86,7 @@ def get_objects_view(request):
     return render(request, context=context, template_name="checks/object.html")
 
 
+@login_required
 def delete_object_view(request):
     Object.objects.filter(id=request.GET['obj_id']).delete()
     return redirect(reverse('object-list'))
@@ -115,6 +126,7 @@ class ControlEventListView(ListView):
         return render(self.request, context=context, template_name=self.template_name)
 
 
+@login_required
 def delete_control_event_view(request):
     control_event_for_delete = request.GET['control_event']
     ControlEvent.objects.filter(id=control_event_for_delete).delete()
@@ -186,6 +198,7 @@ class CheckListFormView(View):
             return render(request, context=context, template_name=self.template_name)
 
 
+@login_required
 def delete_check_list_view(request):
     Result(id=request.GET['control_event_position_id']).delete()
     return redirect(reverse('control-event', kwargs={

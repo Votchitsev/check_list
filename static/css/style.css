@@ -1,28 +1,45 @@
-body {font-family: serif}
+body {
+    font-family: 'Ubuntu';
+    margin: auto;
+        }
 
 .background {
     width: 1200px;
     background-color: white;
-    margin-left: auto;
+    margin-left: 100px;
     margin-right: auto
 }
 
 .head__item {
     color: black;
     display: inline-block;
-    font-size: 40px;
+    font-size: 20px;
     padding: 20px;
     margin-top: auto;
     margin-left: 30px;
     margin-right: 30px;
     }
 
+.user {
+    background-color: #797e79;
+    }
+
 .head {
-    background-color: white;
+    background-color: #99a99a;
     text-align: center;
-    border-bottom: black solid;
     display: flex;
     margin-bottom: 40px
+}
+
+.head-items {
+    margin-left: 500px
+}
+
+.logo {
+    margin-left: 50px;
+    font-size: 30px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 a {
@@ -35,17 +52,27 @@ color: grey
 
 .head__item_chosen {font-weight: bold}
 
-.content_list__item {padding: 10px;
-                     background-color: #ebe6ed;
-                     margin: 10px;
-                     border-left: 4px solid #b6b0b8;
+
+.content_list__item {
+                     padding: 10px;
+                     background-color: #d3e2d4;
+                     margin: 4px;
+                     border-left: 4px solid #99a99a;
+                     height: 21px;
                      }
 
-.content_list__item__name {font-size: 30px;
+.content_list__item__name {
+                           font-size: 20px;
                            display: inline-block;
-                           text-align: left}
+                           text-align: left;
+                           width: 700px;
+                           }
 
-.content_list__item__delete {text-align: right}
+.content_list__item__delete {
+                            text-align: right;
+                            display: inline-block;
+                            width: 430px;
+                            }
 
 .add_item {
             font-size: 20px;
@@ -55,7 +82,10 @@ color: grey
 
 .create__location {
                    font-size: 30px;
-                   text-align: center}
+                   text-align: left;
+                   display: block;
+                   width: 400px;
+                   }
 
 .errorlist {
     font-size: 15px;
@@ -68,10 +98,11 @@ color: grey
 }
 
 .check_list__position {
-    background-color: #ebe6ed;
+    background-color: #99a99a45;
     margin-top: 5px;
     display: flex;
-    
+    padding: 5px;
+    border-left: 5px solid #99a99a;
 }
 
 .check_list__position__question {
@@ -83,25 +114,48 @@ color: grey
 .check_list__position__grade {
     font-size: 20px;
     display: inline-block;
-    width: 200px;
+    width: 132px;
     text-align: center;
+    vertical-align: middle;
+}
 
-
+.check_list__position__delete {
+    display: inline-block;
+    text-align: center;
+    height: 23px;
+    margin-top: 2px;
+    margin-left: 35px;
 }
 
 .check-list-form {
     width: fit-content;
-    border: 2px solid #b6b0b8;
+    border: 2px solid #99a99a;
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
     margin-top: 50px;
     text-align: center;
-    background-color: #ebe6ed
+    background-color: #99a99a45
     }
 
 .check_list__information {
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 20px
+}
+
+.common-information {
+    position:absolute;
+    right: 20px;
+    top: 165px;
+    width: 400px;
+    height: 400px;
+    display: block;
+    font-size: 30px;
+    background-color: #99a99a45;
+    margin-right: 62px;
+    }
+
+ul {
+    list-style-type: none;
 }

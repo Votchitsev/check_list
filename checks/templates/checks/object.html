@@ -7,8 +7,7 @@
             <div class="content_list">
                 {% for object in objects %}
                 <div class="content_list__item">
-                    <div class="content_list__item__name">{{object.name}}</div>
-                    <div class="content_list__item__name">{{object.location}}</div>
+                    <div class="content_list__item__name">{{object.name}} {{object.location}}</div>
                     <div class="content_list__item__delete"><a href="{% url 'object-delete' %}?obj_id={{object.id}}">удалить</a></div>
                 </div>
                 {% endfor %}

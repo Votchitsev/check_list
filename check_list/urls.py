@@ -18,7 +18,7 @@ from django.urls import path, include
 
 from checks.views import start_view, get_objects_view, LocationFormView, LocationListView, delete_location, \
     ObjectFormView, LocationObjectsListView, ControlEventListView, ControlEventFormView, \
-    delete_control_event_view, CheckListFormView, delete_check_list_view, delete_object_view
+    delete_control_event_view, CheckListFormView, delete_check_list_view, delete_object_view, logout_view
 
 location_patterns = [
     path('list/', LocationListView.as_view(), name='location-list'),
@@ -46,5 +46,7 @@ urlpatterns = [
     path('', start_view, name='start_page'),
     path('location/', include(location_patterns)),
     path('object/', include(object_patterns)),
-    path('control_event/', include(control_event_patterns))
+    path('control_event/', include(control_event_patterns)),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('logout/', logout_view, name='logout'),
 ]

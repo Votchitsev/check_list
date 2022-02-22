@@ -14,14 +14,19 @@
                 <div class="check_list__position">
                     <div class="check_list__position__question">{{r.question}}</div>
                     <div class="check_list__position__grade">{{r.grade}}</div>
-                    <div class="check_list__position__delete"><a href="{% url 'delete-check-list-position' %}?control_event_position_id={{r.id}}&control_event_id={{control_event_id}}">удалить</a> </div>
+                    <div class="check_list__position__delete"><a href="{% url 'delete-check-list-position' %}?control_event_position_id={{r.id}}&control_event_id={{control_event_id}}">[X]</a> </div>
                     </div>
                 {% endfor %}
-        <div class="results">Общее количество баллов: {{score}}</div>
                 <form class="check-list-form" action="{% url 'control-event' control_event_id %}" method="post">
                         {% csrf_token %}
                         {{check_list_form}}
                     <input type="submit" value="Добавить">
                 </form>
             </div>
+                <div class="common-information">
+                                <ul>
+                                                <li>Количество баллов: {{score}}</li>
+                                                
+                                </ul>
+                </div>
 {% endblock %}
