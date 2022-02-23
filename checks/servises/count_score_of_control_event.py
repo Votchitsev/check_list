@@ -18,4 +18,3 @@ def count_score(control_event_id):
         return int((score / score_of_checked_questions) * 100)
     except ZeroDivisionError:
         return 0
-
