@@ -4,11 +4,11 @@
 <div class="add_item"><a href="{% url 'control-event-create' %}">Добавить проверку</a></div>
             <div class="content_list">
                 {% for control_event in control_events %}
-                <a href="{% url 'control-event' control_event.id %}">
+                <a class="body-link" href="{% url 'control-event' control_event.id %}">
                     <div class="content_list__item">
                         <div class="content_list__item__name">{{control_event.date}} {{control_event.object}}</div>
                         <div class="content_list__item__delete">
-                            <a href="{% url 'control-event-delete' %}?control_event={{control_event.id}}">удалить</a>
+                            <a class="body-link" href="{% url 'control-event-delete' %}?control_event={{control_event.id}}">удалить</a>
                             </div>
                     </div>
                 </a>

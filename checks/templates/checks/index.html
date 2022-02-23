@@ -7,7 +7,7 @@
 	    <link href="{% static "/css/style.css" %}" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Ubuntu&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300&display=swap" rel="stylesheet">
         <title>{{title}}</title>
 	</head>
 	<body>
@@ -16,21 +16,21 @@
                 <div class="logo">CHECK-LIST</div>
                 <div class="head-items">
                 <div class="head__item">
-                    <a href="{% url 'start_page' %}">Главная</a>
+                    <a class="head-link" href="{% url 'start_page' %}">Главная</a>
                     </div>
                 <div class="head__item">
-                    <a href="{% url 'location-list' %}">Муниципалитеты</a>
+                    <a class="head-link" href="{% url 'location-list' %}">Муниципалитеты</a>
                     </div>
                 <div class="head__item">
-                    <a href="{% url 'object-list' %}">Объекты</a></div>
+                    <a class="head-link" href="{% url 'object-list' %}">Объекты</a></div>
                 <div class="head__item">
-                    <a href="{% url 'control-event-list' %}">Проверки</a>
+                    <a class="head-link" href="{% url 'control-event-list' %}">Проверки</a>
                 </div>
 					<div class="head__item user">
                         {% if user.is_authenticated is False %}
-                            <a href="http://127.0.0.1:8000/accounts/login/">LOG IN</a>
+                            <a class="head-link" href="http://127.0.0.1:8000/accounts/login/">Войти</a>
                         {% else %}
-                            <a href="{% url 'logout' %}">{{user}}</a>
+                            <a class="head-link" href="{% url 'logout' %}">{{user}}</a>
                         {% endif %}</div>
 	            </div>
             </div>
