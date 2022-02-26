@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result
 from checks.servises.count_score_of_control_event import count_score
+from checks.servises.indicators_on_the_main_page import StartPageInfo
 
 
 # START PAGE
@@ -19,9 +20,13 @@ def logout_view(request):
 
 
 def start_view(request):
-    # user = request.user.username
+    info = StartPageInfo(queryset=ControlEvent.objects.all())
     context = {
         'title': 'Главная',
+        'count_of_control_events': info.count_of_control_events(),
+        'negative_results': info.count_of_negative_scores(),
+        'avg_result': info.avg_result(),
+        'results': info.most_positive_and_negative_results()
     }
     return render(request, context=context, template_name='checks/index.html')
 

@@ -40,32 +40,31 @@
             <div class="start-page-information">
                 <div class="start-page-information-card">
                     <div class="start-page-information-card__description">Всего проведено проверок в 2022 году</div>
-                    <div class="start-page-information-card__value">118</div>
+                    <div class="start-page-information-card__value">{{count_of_control_events}}</div>
                 </div>
                 <div class="start-page-information-card">
                     <div class="start-page-information-card__description">Количество неудовлетворительных оценок</div>
-                    <div class="start-page-information-card__value">25</div>
+                    <div class="start-page-information-card__value">{{negative_results}}</div>
                 </div>
                 <div class="start-page-information-card">
                     <div class="start-page-information-card__description">Средний балл за проверку</div>
-                    <div class="start-page-information-card__value">88</div>
+                    <div class="start-page-information-card__value">{{avg_result}}</div>
                 </div>
             </div>
             <div class="start-page-rating">
                 <div class="start-page-rating-card">
-                    <div class="start-page-rating-card__description">Самый лучший результат</div>
-                    <div class="start-page-rating-card__value">90 баллов</div>
-                    <div class="start-page-rating-card__object">Школа № 1 Краснознаменский район</div>
+                    <div class="start-page-rating-card__description">Лучший результат</div>
+                    <div class="start-page-rating-card__value">{{results.winner.result}} баллов</div>
+                    <div class="start-page-rating-card__object">{{results.winner.object}}</div>
                 </div>
                 <div class="start-page-rating-card">
-                    <div class="start-page-rating-card__description">Самый худший результат</div>
-                    <div class="start-page-rating-card__value">65 баллов</div>
-                    <div class="start-page-rating-card__object">Школа № 8 Балтийский ГО</div>
+                    <div class="start-page-rating-card__description">Худший результат</div>
+                    <div class="start-page-rating-card__value">{{results.looser.result}} баллов</div>
+                    <div class="start-page-rating-card__object">{{results.looser.object}}</div>
                 </div>
             </div>
         </div>
 
             {% endblock %}
-            </div>
-	</body>
+    </body>
 </html>
