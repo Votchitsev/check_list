@@ -1,3 +1,5 @@
+import io
+
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -5,11 +7,14 @@ from django.views.generic import ListView
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.http import HttpResponse
+import xlsxwriter
 
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result
 from checks.servises.count_score_of_control_event import count_score
 from checks.servises.indicators_on_the_main_page import StartPageInfo
+from checks.servises.get_files import CheckListReport
 
 
 # START PAGE
@@ -209,3 +214,11 @@ def delete_check_list_view(request):
     return redirect(reverse('control-event', kwargs={
         'control_event_id': request.GET['control_event_id']
     }))
+
+
+def download_check_list_file(request, control_event_id):
+    report = CheckListReport(control_event_id)
+    response = HttpResponse(report.download_check_list_file(),
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f"attachment;filename={report.create_filename()}"
+    return response
