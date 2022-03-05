@@ -160,17 +160,46 @@ color: black;
     font-size: 20px
 }
 
-.common-information {
+.right_column {
     position:absolute;
-    right: 20px;
-    top: 165px;
+    right: 81px;
+    top: 200px;
     width: 400px;
-    height: 400px;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.right_column__common-information {
     font-size: 30px;
     background-color: #99a99a45;
-    margin-right: 62px;
+    width: 100%;
+    height: 75px;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 15px;
+    margin-bottom: 15px;
     }
+
+.right-column__download-check-list {
+    background-color: #99a99a45;
+    width: 100%;
+    height: 75px;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: inherit;
+}
+
+.right-column__download-check-list__title {
+    font-size: 27px;
+    padding: 7px;
+}
 
 ul {
     list-style-type: none;

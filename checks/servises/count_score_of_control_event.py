@@ -8,10 +8,10 @@ def count_score(control_event_id):
     score_of_checked_questions = 0
 
     for i in result_object:
-        if i.grade.name == 'Yes':
+        if i.grade.name == 'Да':
             score += i.question.significance_score
             score_of_checked_questions += i.question.significance_score
-        elif i.grade.name == 'No':
+        elif i.grade.name == 'Нет':
             score_of_checked_questions += i.question.significance_score
 
     try:
