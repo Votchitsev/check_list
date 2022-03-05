@@ -19,7 +19,7 @@ from django.urls import path, include
 from checks.views import start_view, get_objects_view, LocationFormView, LocationListView, delete_location, \
     ObjectFormView, LocationObjectsListView, ControlEventListView, ControlEventFormView, \
     delete_control_event_view, CheckListFormView, delete_check_list_view, delete_object_view, logout_view, \
-    download_check_list_file
+    download_check_list_file, object_page_view
 
 location_patterns = [
     path('list/', LocationListView.as_view(), name='location-list'),
@@ -31,7 +31,8 @@ location_patterns = [
 object_patterns = [
     path('list/', get_objects_view, name='object-list'),
     path('create/', ObjectFormView.as_view(), name='object-create'),
-    path('delete/', delete_object_view, name='object-delete')
+    path('delete/', delete_object_view, name='object-delete'),
+    path('<int:object_id>', object_page_view, name='object-page'),
 ]
 
 control_event_patterns = [

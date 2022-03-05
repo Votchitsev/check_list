@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+{% extends "checks/index.html" %}
+{% load static %}
+{% block content %}
+<h1>{{ object.name }} ({{object.location}})</h1>
+<h2>Общая информация</h2>
+Количество проверок на объекте: {{information.count_control_events}}<br>
+Количество проверок в текущем году: {{information.count_control_events_in_the_year}}<br>
+Количество проверок с неудовлетворительным результатом:<br>
+Средний балл:<br>
+Средний балл в текущем году:<br>
+{% endblock %}

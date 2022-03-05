@@ -15,6 +15,7 @@ from checks.models import Object, Location, ControlEvent, Question, Grade, Resul
 from checks.servises.count_score_of_control_event import count_score
 from checks.servises.indicators_on_the_main_page import StartPageInfo
 from checks.servises.get_files import CheckListReport
+from checks.servises.object_page import ObjectInformation
 
 
 # START PAGE
@@ -88,6 +89,16 @@ class LocationObjectsListView(ListView):
 
 
 #   OBJECTS_VIEWS
+
+def object_page_view(request, object_id):
+    obj = Object.objects.filter(id=object_id)[0]
+    information = ObjectInformation(object_id)
+    context = {
+        'object': obj,
+        'information': information
+    }
+    return render(request, context=context, template_name='checks/object_page.html')
+
 
 def get_objects_view(request):
     objects_list = Object.objects.all()

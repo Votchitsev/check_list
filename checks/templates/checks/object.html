@@ -6,10 +6,12 @@
 <div class="add_item"><a href="{% url 'object-create' %}">Добавить объект</a></div>
             <div class="content_list">
                 {% for object in objects %}
-                <div class="content_list__item">
-                    <div class="content_list__item__name">{{object.name}} {{object.location}}</div>
-                    <div class="content_list__item__delete"><a class="body-link" href="{% url 'object-delete' %}?obj_id={{object.id}}">удалить</a></div>
-                </div>
+                <a href="{% url 'object-page' object.id %}">
+                    <div class="content_list__item">
+                        <div class="content_list__item__name">{{object.name}} {{object.location}}</div>
+                        <div class="content_list__item__delete"><a class="body-link" href="{% url 'object-delete' %}?obj_id={{object.id}}">удалить</a></div>
+                    </div>
+                </a>
                 {% endfor %}
             </div>
 {% endblock %}
