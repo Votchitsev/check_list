@@ -1,6 +1,16 @@
+from datetime import date
+from dataclasses import dataclass
+
 from checks.models import Object
 from checks.models import ControlEvent
-from datetime import date
+from checks.servises.count_score_of_control_event import count_score
+
+
+@dataclass
+class ControlEventData:
+    date: date
+    score: int
+    control_event_id: int
 
 
 class ObjectInformation:
@@ -14,10 +24,43 @@ class ObjectInformation:
         return ControlEvent.objects.filter(object=self.object_id, date__contains=date.today().year).count()
 
     def count_negative_control_events(self):
-        pass
+        queryset = ControlEvent.objects.filter(object=self.object_id)
+
+        count = 0
+
+        for i in queryset:
+            if count_score(i.id) < 80:
+                count += 1
+
+        return count
 
     def average_score(self):
-        pass
+        queryset = ControlEvent.objects.filter(object=self.object_id)
+
+        scores_count = 0
+        control_events_count = 0
+
+        for i in queryset:
+            scores_count += count_score(i.id)
+            control_events_count += 1
+
+        return int(scores_count/control_events_count)
 
     def average_score_in_the_year(self):
-        pass
+        queryset = ControlEvent.objects.filter(object=self.object_id, date__contains=date.today().year)
+
+        scores_count = 0
+        control_events_count = 0
+
+        for i in queryset:
+            scores_count += count_score(i.id)
+            control_events_count += 1
+
+        return int(scores_count / control_events_count)
+
+    def control_events_list(self):
+        queryset = ControlEvent.objects.filter(object=self.object_id)
+
+        result = [ControlEventData(date=i.date, score=count_score(i.id), control_event_id=i.id) for i in queryset]
+
+        return reversed(result)

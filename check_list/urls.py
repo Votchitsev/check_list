@@ -25,7 +25,7 @@ location_patterns = [
     path('list/', LocationListView.as_view(), name='location-list'),
     path('create/', LocationFormView.as_view(), name='location-create'),
     path('delete/', delete_location, name='location-delete'),
-    path('<int:id>/', LocationObjectsListView.as_view(), name='location')
+    path('<int:id>/', LocationObjectsListView.as_view(), name='location'),
 ]
 
 object_patterns = [
@@ -41,7 +41,7 @@ control_event_patterns = [
     path('delete/', delete_control_event_view, name='control-event-delete'),
     path('<int:control_event_id>/', CheckListFormView.as_view(), name='control-event'),
     path('delete_position/', delete_check_list_view, name='delete-check-list-position'),
-    path('<int:control_event_id>/download_check_list/', download_check_list_file, name='download_check_list')
+    path('<int:control_event_id>/download_check_list/', download_check_list_file, name='download_check_list'),
 ]
 
 urlpatterns = [

@@ -7,7 +7,13 @@
 <h2>Общая информация</h2>
 Количество проверок на объекте: {{information.count_control_events}}<br>
 Количество проверок в текущем году: {{information.count_control_events_in_the_year}}<br>
-Количество проверок с неудовлетворительным результатом:<br>
-Средний балл:<br>
-Средний балл в текущем году:<br>
+Количество проверок с неудовлетворительным результатом: {{information.count_negative_control_events}}<br>
+Средний балл: {{information.average_score}}<br>
+Средний балл в текущем году: {{information.average_score_in_the_year}}<br>
+<h2>Список проверок:</h2>
+<ul>
+{% for i in information.control_events_list%}
+    <li><a href="{% url 'control-event' i.control_event_id %}">{{i.date}} - {{i.score}}</a>
+{% endfor %}
+</ul>
 {% endblock %}
