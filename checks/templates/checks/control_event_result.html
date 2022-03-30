@@ -1,11 +1,16 @@
 {% extends "checks/index.html" %}
 {% load static %}
-{% block content %}
+{% block main %}
     <div class="check_list">
         <div class="check_list__information">
             <div class="check_list__information__object">{{object}}</div>
             <div class="check_list__information__object">{{date}}</div>
         </div>
+            <form class="check-list-form" action="{% url 'control-event' control_event_id %}" method="post">
+                {% csrf_token %}
+                {{check_list_form}}
+                <input type="submit" value="Добавить">
+            </form>
                 {% for r in result %}
                 <div class="check_list__position">
                     <div class="check_list__position__question">{{r.question}}</div>
@@ -13,22 +18,13 @@
                     <div class="check_list__position__delete"><a href="{% url 'delete-check-list-position' %}?control_event_position_id={{r.id}}&control_event_id={{control_event_id}}">[X]</a> </div>
                 </div>
                 {% endfor %}
-                <form class="check-list-form" action="{% url 'control-event' control_event_id %}" method="post">
-                        {% csrf_token %}
-                        {{check_list_form}}
-                    <input type="submit" value="Добавить">
-                </form>
             </div>
-        <aside class="right_column">
-            <div class="right_column__common-information">Количество баллов: {{score}}</div>
-            <a class="right-column__download-check-list" href="{% url 'download_check_list' control_event_id %}">
-                <img src="https://img.icons8.com/ios/50/000000/download--v1.png"/>
-                <span class="right-column__download-check-list__title">Загрузить чек-лист</span>
-            </a>
-        </aside>
-
-
-
-
-
 {% endblock %}
+{% block aside %}
+        <div class="right_column__common-information"><span class="score">{{score}}</span> баллов </div>
+                <a class="right-column__download-check-list" href="{% url 'download_check_list' control_event_id %}">
+                    <img src="https://img.icons8.com/ios/50/000000/download--v1.png"/>
+                    <span class="right-column__download-check-list__title">Загрузить чек-лист</span>
+                </a>
+{% endblock %}
+

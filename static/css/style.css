@@ -3,7 +3,25 @@ body {
     font-weight: 300;
     font-size: 20px;
     margin: auto;
+    min-width: 100%;
     }
+
+.wrap {
+    margin: 0 100px;
+    display: flex;
+    margin-bottom: 100px;
+}
+
+main {
+    width: 1200px;
+    display: flex;
+    flex-direction: column;
+}
+
+aside {
+    padding-left: 30px;
+    min-width: 200px;
+}
 
 .background {
     width: 1200px;
@@ -15,12 +33,9 @@ body {
 }
 
 .head__item {
-    display: inline-block;
     font-size: 24px;
-    padding: 20px;
     margin-top: auto;
-    margin-left: -6px;
-    margin-right: 30px;
+    margin-right: 86px;
     color: white;
     }
 
@@ -33,8 +48,7 @@ body {
     }
 
 .user {
-    background-color: #797e79;
-    color: black;
+        color: black;
     }
 
 .user:hover {
@@ -43,15 +57,25 @@ body {
 
 .head {
     background-color: #769276;
-    text-align: center;
     display: flex;
-    flex-wrap: wrap;
     margin-bottom: 40px;
+    width: 100%;
+    min-width: 100%;
+    height: 60px;
+    position: relative;
+    justify-content: space-between;
 }
 
 .head-items {
-    margin-left: 500px;
     color: black;
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding-bottom: auto;
+    margin-right: 60px;
+    align: middle;
 }
 
 .logo {
@@ -59,6 +83,8 @@ body {
     font-size: 42px;
     margin-top: auto;
     margin-bottom: auto;
+    left: 50px;
+    min-width: 250px;
 }
 
 .logo {}
@@ -76,6 +102,7 @@ color: black;
                      margin: 4px;
                      border-left: 4px solid #99a99a;
                      height: 21px;
+                     position: relative;
                      }
 
 .content_list__item__name {
@@ -87,8 +114,10 @@ color: black;
 
 .content_list__item__delete {
                             text-align: right;
+                            position: absolute;
                             display: inline-block;
-                            width: 430px;
+                            /* width: 430px; */
+                            right: 30px;
                             }
 
 .add_item {
@@ -107,7 +136,10 @@ color: black;
 .errorlist {
     font-size: 15px;
     color: red;
-    list-style-type: none
+    list-style-type: none;
+    position: absolute;
+    top: 147px;
+    left: 679px;
     }
 
 .id_name {
@@ -145,14 +177,21 @@ color: black;
 }
 
 .check-list-form {
-    width: fit-content;
-    border: 2px solid #99a99a;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 20px;
-    margin-top: 50px;
-    text-align: center;
-    background-color: #99a99a45
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    }
+
+#id_grade {
+    display: flex;
+}
+
+select {
+    width: 50%;
+    }
+
+option {
+        width: 100px;
     }
 
 .check_list__information {
@@ -162,25 +201,25 @@ color: black;
 }
 
 .right_column {
-    position:absolute;
-    right: 81px;
-    top: 200px;
+    padding-left: 30px;
     width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    align-self: baseline;
     justify-content: center;
 }
 
 .right_column__common-information {
-    font-size: 30px;
+    font-size: 1em;
     background-color: #99a99a45;
     width: 100%;
     height: 75px;
     text-align: center;
-    box-sizing: border-box;
     padding: 15px;
+    margin-top: 120px;
     margin-bottom: 15px;
+    box-sizing: border-box;
     }
 
 .right-column__download-check-list {
@@ -198,7 +237,7 @@ color: black;
 }
 
 .right-column__download-check-list__title {
-    font-size: 27px;
+    font-size: 1em;
     padding: 7px;
 }
 
@@ -279,4 +318,8 @@ ul {
     block-sizing: border-box;
     height: 30%;
     width: 100%;
+}
+
+.score {
+    font-size: 2em;
 }

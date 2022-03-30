@@ -11,60 +11,67 @@
         <title>{{title}}</title>
 	</head>
 	<body>
-            {% block head %}
-            <div class="head">
-                <div class="logo">CHECK-LIST</div>
-                <div class="head-items">
+        {% block head %}
+        <div class="head">
+            <div class="logo">CHECK-LIST</div>
+            <div class="head-items">
                 <div class="head__item">
                     <a class="head-link" href="{% url 'start_page' %}">Главная</a>
-                    </div>
+                </div>
                 <div class="head__item">
                     <a class="head-link" href="{% url 'location-list' %}">Муниципалитеты</a>
-                    </div>
+                </div>
                 <div class="head__item">
-                    <a class="head-link" href="{% url 'object-list' %}">Объекты</a></div>
+                    <a class="head-link" href="{% url 'object-list' %}">Объекты</a>
+                </div>
                 <div class="head__item">
                     <a class="head-link" href="{% url 'control-event-list' %}">Проверки</a>
                 </div>
-					<div class="head__item user">
-                        {% if user.is_authenticated is False %}
-                            <a class="head-link" href="http://127.0.0.1:8000/accounts/login/">Войти</a>
-                        {% else %}
-                            <a class="head-link" href="{% url 'logout' %}">{{user}}</a>
-                        {% endif %}</div>
-	            </div>
-            </div>
-            {% endblock %}
-		<div class=background>
-            {% block content %}
-            <div class="start-page-information">
-                <div class="start-page-information-card">
-                    <div class="start-page-information-card__description">Всего проведено проверок в 2022 году</div>
-                    <div class="start-page-information-card__value">{{count_of_control_events}}</div>
-                </div>
-                <div class="start-page-information-card">
-                    <div class="start-page-information-card__description">Количество неудовлетворительных оценок</div>
-                    <div class="start-page-information-card__value">{{negative_results}}</div>
-                </div>
-                <div class="start-page-information-card">
-                    <div class="start-page-information-card__description">Средний балл за проверку</div>
-                    <div class="start-page-information-card__value">{{avg_result}}</div>
-                </div>
-            </div>
-            <div class="start-page-rating">
-                <div class="start-page-rating-card">
-                    <div class="start-page-rating-card__description">Лучший результат</div>
-                    <div class="start-page-rating-card__value">{{results.winner.result}} баллов</div>
-                    <div class="start-page-rating-card__object">{{results.winner.object}}</div>
-                </div>
-                <div class="start-page-rating-card">
-                    <div class="start-page-rating-card__description">Худший результат</div>
-                    <div class="start-page-rating-card__value">{{results.looser.result}} баллов</div>
-                    <div class="start-page-rating-card__object">{{results.looser.object}}</div>
+                <div class="head__item user">
+                    {% if user.is_authenticated is False %}
+                    <a class="head-link" href="http://127.0.0.1:8000/accounts/login/">Войти</a>
+                    {% else %}
+                    <a class="head-link" href="{% url 'logout' %}">{{user}}</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
-
+        {% endblock %}
+        <div class="wrap">
+            <main>
+                {% block main %}
+                <div class="start-page-information">
+                    <div class="start-page-information-card">
+                        <div class="start-page-information-card__description">Всего проведено проверок в 2022 году</div>
+                        <div class="start-page-information-card__value">{{count_of_control_events}}</div>
+                    </div>
+                    <div class="start-page-information-card">
+                        <div class="start-page-information-card__description">Количество неудовлетворительных оценок</div>
+                        <div class="start-page-information-card__value">{{negative_results}}</div>
+                    </div>
+                    <div class="start-page-information-card">
+                        <div class="start-page-information-card__description">Средний балл за проверку</div>
+                        <div class="start-page-information-card__value">{{avg_result}}</div>
+                    </div>
+                </div>
+                <div class="start-page-rating">
+                    <div class="start-page-rating-card">
+                        <div class="start-page-rating-card__description">Лучший результат</div>
+                        <div class="start-page-rating-card__value">{{results.winner.result}} баллов</div>
+                        <div class="start-page-rating-card__object">{{results.winner.object}}</div>
+                    </div>
+                    <div class="start-page-rating-card">
+                        <div class="start-page-rating-card__description">Худший результат</div>
+                        <div class="start-page-rating-card__value">{{results.looser.result}} баллов</div>
+                        <div class="start-page-rating-card__object">{{results.looser.object}}</div>
+                    </div>
+                </div>
             {% endblock %}
+            </main>
+
+            <aside class="right_column">
+            {% block aside %}
+            {% endblock %}
+            </aside>
     </body>
 </html>

@@ -1,6 +1,6 @@
 {% extends "checks/index.html" %}
 {% load static %}
-{% block content %}
+{% block main %}
 <div class="add_item"><a href="{% url 'control-event-create' %}">Добавить проверку</a></div>
             <div class="content_list">
                 {% for control_event in control_events %}

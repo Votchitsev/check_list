@@ -1,6 +1,6 @@
 {% extends "checks/index.html" %}
 {% load static %}
-{% block content %}
+{% block main %}
     <form class="create__location" action="{% url 'location-create' %}" method="post">{% csrf_token %}
                     {{ form }}<br>
         <input type="submit" value="Добавить">
