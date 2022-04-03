@@ -80,14 +80,16 @@ aside {
 
 .logo {
     margin-left: 50px;
-    font-size: 42px;
+    font-size: 17px;
     margin-top: auto;
     margin-bottom: auto;
     left: 50px;
     min-width: 250px;
-}
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    }
 
-.logo {}
 
 a {text-decoration: none;color: black;}
 

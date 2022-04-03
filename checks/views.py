@@ -36,6 +36,7 @@ def start_view(request):
     }
     return render(request, context=context, template_name='checks/index.html')
 
+
 # LOCATION_VIEWS
 
 
@@ -180,7 +181,7 @@ class CheckListFormView(View):
     form_class = CheckListForm
     template_name = 'checks/control_event_result.html'
 
-    def get(self, request, control_event_id):   # TODO add count result score
+    def get(self, request, control_event_id):
         control_event = ControlEvent.objects.filter(id=control_event_id)[0]
         form = self.form_class(initial={'control_event': control_event})
         result = Result.objects.filter(control_event=control_event_id)

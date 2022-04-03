@@ -21,7 +21,7 @@ class CreateLocationForm(ModelForm):
         }
 
     def clean_name(self):
-        formatted_name = self.cleaned_data['name'].capitalize()
+        formatted_name = self.cleaned_data['name']
 
         if Location.objects.filter(name=formatted_name).exists():
             raise ValidationError('Такой район уже есть')

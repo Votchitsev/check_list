@@ -2,7 +2,7 @@
 {% extends "checks/index.html" %}
 
 {% load static %}
-{% block content %}
+{% block aside %}
 <div class="authorization-form">
     <form method="post" action="{% url 'login' %}">
     {% csrf_token %}

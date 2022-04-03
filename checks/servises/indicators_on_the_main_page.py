@@ -17,7 +17,7 @@ class StartPageInfo:
         negative_scores = 0
 
         for e in events:
-            if count_score(e) < 80:
+            if count_score(e) < 80 or Result.objects.filter(control_event=e.id, question_id=33)[0].grade.id == 5:
                 negative_scores += 1
 
         return negative_scores

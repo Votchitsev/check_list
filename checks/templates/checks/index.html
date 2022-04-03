@@ -13,7 +13,7 @@
 	<body>
         {% block head %}
         <div class="head">
-            <div class="logo">CHECK-LIST</div>
+            <div class="logo">Информационная система<br>ревизионного отдела</div>
             <div class="head-items">
                 <div class="head__item">
                     <a class="head-link" href="{% url 'start_page' %}">Главная</a>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="head__item user">
                     {% if user.is_authenticated is False %}
-                    <a class="head-link" href="http://127.0.0.1:8000/accounts/login/">Войти</a>
+                    <a class="head-link" href="/accounts/login/">Войти</a>
                     {% else %}
                     <a class="head-link" href="{% url 'logout' %}">{{user}}</a>
                     {% endif %}
