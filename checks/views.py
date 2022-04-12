@@ -12,7 +12,7 @@ import xlsxwriter
 
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result
-from checks.servises.count_score_of_control_event import count_score
+from checks.servises.count_score_of_control_event import Counter
 from checks.servises.indicators_on_the_main_page import StartPageInfo
 from checks.servises.get_files import CheckListReport
 from checks.servises.object_page import ObjectInformation
@@ -143,7 +143,7 @@ class ControlEventListView(ListView):
     template_name = 'checks/control_event.html'
 
     def get(self, *args, **kwargs):
-        control_events_list = self.get_queryset()
+        control_events_list = self.get_queryset().order_by('-date')
         context = {'control_events': control_events_list}
         return render(self.request, context=context, template_name=self.template_name)
 
@@ -183,16 +183,18 @@ class CheckListFormView(View):
 
     def get(self, request, control_event_id):
         control_event = ControlEvent.objects.filter(id=control_event_id)[0]
-        form = self.form_class(initial={'control_event': control_event})
-        result = Result.objects.filter(control_event=control_event_id)
-        score = count_score(control_event_id=control_event_id)
+        counter = Counter(control_event_id)
+
         context = {
-            'check_list_form': form,
-            'result': result,
+            'check_list_form': self.form_class(initial={'control_event': control_event}),
+            'result': Result.objects.filter(control_event=control_event_id),
             'control_event_id': control_event_id,
             'object': control_event.object,
             'date': control_event.date,
-            'score': score,
+            'score': counter.count_score(),
+            'manager_responsibility': counter.manager_count_score(),
+            'production_responsibility': counter.production_count_score(),
+            'status': counter.completeness_check(),
         }
         return render(request=request, context=context, template_name=self.template_name)
 

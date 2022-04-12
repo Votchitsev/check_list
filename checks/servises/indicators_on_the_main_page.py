@@ -1,6 +1,6 @@
 from checks.models import ControlEvent, Result
 from pprint import pprint
-from checks.servises.count_score_of_control_event import count_score
+from checks.servises.count_score_of_control_event import Counter
 
 
 class StartPageInfo:
@@ -17,7 +17,8 @@ class StartPageInfo:
         negative_scores = 0
 
         for e in events:
-            if count_score(e) < 80 or Result.objects.filter(control_event=e.id, question_id=33)[0].grade.id == 5:
+            counter = Counter(e)
+            if counter.count_score() < 80 or Result.objects.filter(control_event=e.id, question_id=33)[0].grade.id == 5:
                 negative_scores += 1
 
         return negative_scores
@@ -29,7 +30,8 @@ class StartPageInfo:
         number_of_control_events = 0
 
         for e in events:
-            results += count_score(e)
+            counter = Counter(e)
+            results += counter.count_score()
             number_of_control_events += 1
         try:
             return int(results / number_of_control_events)
@@ -41,7 +43,8 @@ class StartPageInfo:
         results = {}
 
         for i in self.queryset:
-            results[i] = count_score(i)
+            counter = Counter(i)
+            results[i] = counter.count_score()
 
         try:
             winner = max(results, key=results.get)

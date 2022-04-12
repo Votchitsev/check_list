@@ -2,7 +2,7 @@ import io
 import xlsxwriter
 
 from checks.models import Result
-from checks.servises.count_score_of_control_event import count_score
+from checks.servises.count_score_of_control_event import Counter
 
 
 class CheckListReport:
@@ -29,7 +29,7 @@ class CheckListReport:
             worksheet.write(row, 1, str(item.grade))
             row += 1
 
-        worksheet.write(row, 0, f"Итоговая оценка: {count_score(self.control_event)} балла(-ов)")
+        worksheet.write(row, 0, f"Итоговая оценка: {Counter(self.control_event).count_score()} балла(-ов)")
 
         workbook.close()
         output.seek(0)
