@@ -37,9 +37,10 @@ class Counter:
         score = 0
         score_of_not_checked_questions = 0
 
-        score_of_all_questions = sum([x.question.significance_score for x in manager_result_object])
-        score_of_all_questions += (sum([x.question.significance_score for x in
-                                        manager_and_production_result_object])) / 2
+        score_of_all_questions = sum([x.significance_score for x in self.questions if x.id in
+                                      self.manager_questions])
+        score_of_all_questions += sum([x.significance_score for x in self.questions if x.id in
+                                       self.manager_and_production_questions]) / 2
 
         for i in manager_result_object + manager_and_production_result_object:
             if i.grade.name == "Да":
@@ -69,9 +70,11 @@ class Counter:
         score = 0
         score_of_not_checked_questions = 0
 
-        score_of_all_questions = sum([x.question.significance_score for x in production_result_object])
-        score_of_all_questions += (sum([x.question.significance_score for x in
-                                        manager_and_production_result_object])) / 2
+        score_of_all_questions = sum([x.significance_score for x in self.questions if x.id not in
+                                      self.manager_questions and x.id not in self.manager_and_production_questions])
+        score_of_all_questions += sum([x.significance_score for x in self.questions if x.id in
+                                       self.manager_and_production_questions]) / 2
+        score_of_all_questions -= 2
 
         for i in production_result_object + manager_and_production_result_object:
             if i.grade.name == "Да":
@@ -86,7 +89,7 @@ class Counter:
                     score_of_not_checked_questions += i.question.significance_score
 
         try:
-            return int(math.ceil((score / ((score_of_all_questions - 2) - score_of_not_checked_questions)) * 100))
+            return int(math.ceil((score / (score_of_all_questions - score_of_not_checked_questions - 2)) * 100))
         except ZeroDivisionError:
             return 0
 
