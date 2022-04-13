@@ -30,6 +30,12 @@ class CheckListReport:
             row += 1
 
         worksheet.write(row, 0, f"Итоговая оценка: {Counter(self.control_event).count_score()} балла(-ов)")
+        row += 1
+        worksheet.write(row, 0, f"Оценка управляющему: {Counter(self.control_event).manager_count_score()} балла(-ов)")
+        row += 1
+        worksheet.write(row, 0,
+                        f"Оценка управляющему по производству: "
+                        f"{Counter(self.control_event).production_count_score()} балла(-ов)")
 
         workbook.close()
         output.seek(0)
