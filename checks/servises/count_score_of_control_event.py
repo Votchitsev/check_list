@@ -89,7 +89,7 @@ class Counter:
                     score_of_not_checked_questions += i.question.significance_score
 
         try:
-            return int(math.ceil((score / (score_of_all_questions - score_of_not_checked_questions - 2)) * 100))
+            return int(math.ceil((score / (score_of_all_questions - score_of_not_checked_questions)) * 100))
         except ZeroDivisionError:
             return 0
 
