@@ -8,8 +8,8 @@ class Counter:
 
         self.result_object = Result.objects.filter(control_event_id=control_event_id)
         self.questions = Question.objects.all()
-        self.manager_questions = [6, 7, 8, 10, 21, 22, 23, 24, 25, 27, 56, 59, 60, 62, 66, 69]
-        self.manager_and_production_questions = [3, 4, 11, 16, 19, 29, 30, 31, 35, 37, 38, 46, 47, 51, 58, 63, 64]
+        self.manager_questions = [3, 6, 7, 8, 10, 21, 22, 23, 24, 25, 27, 59, 60, 62, 66, 69]
+        self.manager_and_production_questions = [4, 5, 11, 16, 17, 19, 30, 31, 35, 46, 47, 50, 56, 58, 63, 64]
 
     def count_score(self):
 
