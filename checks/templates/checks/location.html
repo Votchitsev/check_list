@@ -8,7 +8,6 @@
         {% for location in locations %}
             <div class="content_list__item">
                     <div class="content_list__item__name"><a class="body-link" href="{% url 'location' location.id %}">{{location}}</a></div>
-                    <div class="content_list__item__delete"><a class="body-link" href="{% url 'location-delete' %}?location_id={{location.id}}">удалить</a></div>
             </div>
         {% endfor %}
             </div>

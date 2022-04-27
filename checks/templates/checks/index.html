@@ -40,38 +40,26 @@
         <div class="wrap">
             <main>
                 {% block main %}
-                <div class="start-page-information">
-                    <div class="start-page-information-card">
-                        <div class="start-page-information-card__description">Всего проведено проверок в 2022 году</div>
-                        <div class="start-page-information-card__value">{{count_of_control_events}}</div>
-                    </div>
-                    <div class="start-page-information-card">
-                        <div class="start-page-information-card__description">Количество неудовлетворительных оценок</div>
-                        <div class="start-page-information-card__value">{{negative_results}}</div>
-                    </div>
-                    <div class="start-page-information-card">
-                        <div class="start-page-information-card__description">Средний балл за проверку</div>
-                        <div class="start-page-information-card__value">{{avg_result}}</div>
-                    </div>
+                <h1 class="main-header">Отчёты и сводные таблицы</h1>
+                <div class="main-report">
+                    <h2 class="main-report__title">Отчёт о проведенных проверках за период</h2>
+                    <form action="/report/" method="get" class="main-report-form">
+                        <label for="start_date">Начальная дата:
+                            <input id="start_date" type="date" name="start_date" required>
+                        </label>
+                        <label for="finish_date">Конечная дата:
+                            <input id="finish_date" type="date" name="finish_date" required>
+                        </label>
+                        <input id="submit" type="submit" value="ОК">
+                    </form>
                 </div>
-                <div class="start-page-rating">
-                    <div class="start-page-rating-card">
-                        <div class="start-page-rating-card__description">Лучший результат</div>
-                        <div class="start-page-rating-card__value">{{results.winner.result}} баллов</div>
-                        <div class="start-page-rating-card__object">{{results.winner.object}}</div>
-                    </div>
-                    <div class="start-page-rating-card">
-                        <div class="start-page-rating-card__description">Худший результат</div>
-                        <div class="start-page-rating-card__value">{{results.looser.result}} баллов</div>
-                        <div class="start-page-rating-card__object">{{results.looser.object}}</div>
-                    </div>
-                </div>
-            {% endblock %}
+                <script src="{% static "/js/index.js" %}"></script>
+                {% endblock %}
             </main>
-
             <aside class="right_column">
             {% block aside %}
             {% endblock %}
             </aside>
     </body>
+
 </html>

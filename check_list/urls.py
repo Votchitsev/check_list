@@ -16,22 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from checks.views import start_view, get_objects_view, LocationFormView, LocationListView, delete_location, \
+from checks.views import start_view, get_objects_view, LocationFormView, LocationListView, \
     ObjectFormView, LocationObjectsListView, ControlEventListView, ControlEventFormView, \
-    delete_control_event_view, CheckListFormView, delete_check_list_view, delete_object_view, logout_view, \
-    download_check_list_file, object_page_view
+    delete_control_event_view, CheckListFormView, delete_check_list_view, logout_view, \
+    download_check_list_file, object_page_view, download_main_report
 
 location_patterns = [
     path('list/', LocationListView.as_view(), name='location-list'),
     path('create/', LocationFormView.as_view(), name='location-create'),
-    path('delete/', delete_location, name='location-delete'),
     path('<int:id>/', LocationObjectsListView.as_view(), name='location'),
 ]
 
 object_patterns = [
     path('list/', get_objects_view, name='object-list'),
     path('create/', ObjectFormView.as_view(), name='object-create'),
-    path('delete/', delete_object_view, name='object-delete'),
     path('<int:object_id>', object_page_view, name='object-page'),
 ]
 
@@ -52,4 +50,5 @@ urlpatterns = [
     path('control_event/', include(control_event_patterns)),
     path('accounts/', include('django.contrib.auth.urls')),
     path('logout/', logout_view, name='logout'),
+    path('report/', download_main_report, name='download_main_report'),
 ]

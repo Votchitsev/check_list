@@ -98,6 +98,59 @@ a:hover {
 color: black;
 }
 
+.main-header {
+    color: #769276;
+    font-weight: normal;
+}
+
+.main-report {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    border: none;
+    border-left: 2px solid #769276;
+    padding: 15px;
+    color: #769276;
+}
+
+.main-report__title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: normal;
+}
+
+.main-report-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 17px;
+}
+
+.main-report-form > #submit {
+    margin-top: 21px;
+    height: 40px;
+    border: none;
+    background-color: #769276;
+    color: white;
+    font-size: 20px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+#start_date, #finish_date {
+    border: none;
+    border-bottom: 1px solid black;
+    height: 25px;
+    width: 114px;
+    margin-left: 20px;
+    font: inherit;
+    font-size: 18px;
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+}
 
 .content_list__item {
                      padding: 10px;

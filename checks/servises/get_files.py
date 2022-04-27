@@ -1,7 +1,7 @@
 import io
 import xlsxwriter
 
-from checks.models import Result
+from checks.models import Result, ControlEvent
 from checks.servises.count_score_of_control_event import Counter
 
 
@@ -45,3 +45,38 @@ class CheckListReport:
     def create_filename(self):
         return f"{self.queryset[0].control_event.date}_" \
                f"{self.queryset[0].control_event.object.name}.xlsx"
+
+
+class MainReport:
+    def __init__(self, start_date, finish_date):
+        self.start_date = start_date
+        self.finish_date = finish_date
+
+    def download_file(self):
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output)
+        bold = workbook.add_format({'bold': True})
+        worksheet = workbook.add_worksheet()
+        column_headers = ['Дата', 'Объект', 'Оценка', 'Баллы', 'Оценка управляющему',
+                          'Оценка управляющему по производству', 'Наличие просроченной продукции']
+        row = 0
+
+        for index, header in enumerate(column_headers):
+            worksheet.write(row, index, header, bold)
+        row += 1
+
+        for i in ControlEvent.objects.filter(date__range=[self.start_date, self.finish_date]).order_by('date'):
+            counter = Counter(i.id)
+            worksheet.write(row, 0, str(i.date))
+            worksheet.write(row, 1, str(i.object))
+            worksheet.write(row, 2, counter.common_grade())
+            worksheet.write(row, 3, counter.count_score())
+            worksheet.write(row, 4, counter.manager_count_score())
+            worksheet.write(row, 5, counter.production_count_score())
+            worksheet.write(row, 6, str(counter.is_overdue_food()))
+            row += 1
+
+        workbook.close()
+        output.seek(0)
+
+        return output

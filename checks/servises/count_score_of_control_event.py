@@ -99,3 +99,21 @@ class Counter:
             return '✓'
         else:
             return '✗'
+
+    def common_grade(self):
+
+        if self.count_score() < 80 or self.result_object.filter(question_id=33)[0].grade == 'Нет':
+            return 'Неудовлетворительно'
+        elif 79 < self.count_score() < 95:
+            return 'Удовлетворительно'
+        elif 94 < self.count_score() < 99:
+            return 'Хорошо'
+        elif self.count_score() == 100:
+            return 'Отлично'
+
+    def is_overdue_food(self):
+
+        if str(self.result_object.filter(question_id=33)[0].grade) == 'Нет':
+            return 'Да'
+        else:
+            return 'Нет'

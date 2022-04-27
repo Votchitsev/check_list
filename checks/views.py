@@ -9,12 +9,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.http import HttpResponse
 import xlsxwriter
+from pprint import pprint
 
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result
 from checks.servises.count_score_of_control_event import Counter
-from checks.servises.indicators_on_the_main_page import StartPageInfo
-from checks.servises.get_files import CheckListReport
+from checks.servises.get_files import CheckListReport, MainReport
 from checks.servises.object_page import ObjectInformation
 
 
@@ -26,15 +26,8 @@ def logout_view(request):
 
 
 def start_view(request):
-    info = StartPageInfo(queryset=ControlEvent.objects.all())
-    context = {
-        'title': 'Главная',
-        'count_of_control_events': info.count_of_control_events(),
-        'negative_results': info.count_of_negative_scores(),
-        'avg_result': info.avg_result(),
-        'results': info.most_positive_and_negative_results()
-    }
-    return render(request, context=context, template_name='checks/index.html')
+    
+    return render(request, template_name='checks/index.html')
 
 
 # LOCATION_VIEWS
@@ -49,14 +42,6 @@ class LocationListView(ListView):
         context = super(LocationListView, self).get_context_data(**kwargs)
         context['title'] = 'Муниципалитеты'
         return context
-
-
-@login_required
-def delete_location(request):
-    Location.objects.filter(id=request.GET['location_id']).delete()
-    location_list = Location.objects.all()
-    context = {'locations': location_list}
-    return render(request, context=context, template_name='checks/location.html')
 
 
 class LocationFormView(View):
@@ -106,12 +91,6 @@ def get_objects_view(request):
     context = {'objects': objects_list,
                'title': 'Объекты'}
     return render(request, context=context, template_name="checks/object.html")
-
-
-@login_required
-def delete_object_view(request):
-    Object.objects.filter(id=request.GET['obj_id']).delete()
-    return redirect(reverse('object-list'))
 
 
 class ObjectFormView(View):
@@ -236,3 +215,15 @@ def download_check_list_file(request, control_event_id):
                             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f"attachment;filename={report.create_filename()}"
     return response
+
+
+def download_main_report(request):
+    start_date = request.GET['start_date']
+    finish_date = request.GET['finish_date']
+    
+    report = MainReport(start_date, finish_date)
+    response = HttpResponse(report.download_file(),
+                                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f"attachment;filename=report.xlsx"
+    return response
+    
