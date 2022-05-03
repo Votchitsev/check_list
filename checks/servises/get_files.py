@@ -58,7 +58,8 @@ class MainReport:
         bold = workbook.add_format({'bold': True})
         worksheet = workbook.add_worksheet()
         column_headers = ['Дата', 'Объект', 'Оценка', 'Баллы', 'Оценка управляющему',
-                          'Оценка управляющему по производству', 'Наличие просроченной продукции']
+                          'Оценка управляющему по производству', 'Наличие просроченной продукции', 
+                          'Наличие недоброкачественной продукции']
         row = 0
 
         for index, header in enumerate(column_headers):
@@ -74,6 +75,7 @@ class MainReport:
             worksheet.write(row, 4, counter.manager_count_score())
             worksheet.write(row, 5, counter.production_count_score())
             worksheet.write(row, 6, str(counter.is_overdue_food()))
+            worksheet.write(row, 7, str(counter.is_poor_quality()))
             row += 1
 
         workbook.close()

@@ -101,12 +101,12 @@ class Counter:
             return '✗'
 
     def common_grade(self):
-
-        if self.count_score() < 80 or self.result_object.filter(question_id=33)[0].grade == 'Нет':
+        
+        if self.count_score() < 80 or str(self.result_object.filter(question_id=33)[0].grade) == 'Нет':
             return 'Неудовлетворительно'
         elif 79 < self.count_score() < 95:
             return 'Удовлетворительно'
-        elif 94 < self.count_score() < 99:
+        elif 94 < self.count_score() < 100:
             return 'Хорошо'
         elif self.count_score() == 100:
             return 'Отлично'
@@ -117,3 +117,10 @@ class Counter:
             return 'Да'
         else:
             return 'Нет'
+
+    def is_poor_quality(self):
+        if str(self.result_object.filter(question_id=34)[0].grade) == 'Нет':
+            return 'Да'
+        else:
+            return 'Нет'
+        
