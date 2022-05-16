@@ -19,7 +19,8 @@ from django.urls import path, include
 from checks.views import start_view, get_objects_view, LocationFormView, LocationListView, \
     ObjectFormView, LocationObjectsListView, ControlEventListView, ControlEventFormView, \
     delete_control_event_view, CheckListFormView, delete_check_list_view, logout_view, \
-    download_check_list_file, object_page_view, download_main_report
+    download_check_list_file, object_page_view, download_main_report, get_correction_report, change_correction_report, \
+    add_correction_report_comment, delete_correction_report_comment
 
 location_patterns = [
     path('list/', LocationListView.as_view(), name='location-list'),
@@ -40,6 +41,10 @@ control_event_patterns = [
     path('<int:control_event_id>/', CheckListFormView.as_view(), name='control-event'),
     path('delete_position/', delete_check_list_view, name='delete-check-list-position'),
     path('<int:control_event_id>/download_check_list/', download_check_list_file, name='download_check_list'),
+    path('<int:control_event_id>/correction_report/', get_correction_report, name='get_correction_report'),
+    path('<int:control_event_id>/correction_report/change/', change_correction_report, name='change_correction_report'),
+    path('<int:control_event_id>/correction_report/add/', add_correction_report_comment, name='add_correction_report_comment'),
+    path('<int:control_event_id>/correction_report/delete/', delete_correction_report_comment, name='delete_correction_report_comment')
 ]
 
 urlpatterns = [

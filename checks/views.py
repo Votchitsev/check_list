@@ -1,6 +1,4 @@
-import io
 
-from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView
@@ -8,11 +6,9 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.http import HttpResponse
-import xlsxwriter
-from pprint import pprint
 
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
-from checks.models import Object, Location, ControlEvent, Question, Grade, Result
+from checks.models import Object, Location, ControlEvent, Question, Grade, Result, CorrectionReport, CorrectionReportComment
 from checks.servises.count_score_of_control_event import Counter
 from checks.servises.get_files import CheckListReport, MainReport
 from checks.servises.object_page import ObjectInformation
@@ -81,7 +77,8 @@ def object_page_view(request, object_id):
     information = ObjectInformation(object_id)
     context = {
         'object': obj,
-        'information': information
+        'information': information,
+        'title': obj.name,
     }
     return render(request, context=context, template_name='checks/object_page.html')
 
@@ -123,7 +120,10 @@ class ControlEventListView(ListView):
 
     def get(self, *args, **kwargs):
         control_events_list = self.get_queryset().order_by('-date')
-        context = {'control_events': control_events_list}
+        context = {
+            'control_events': control_events_list,
+            'title': 'Проверки',
+            }
         return render(self.request, context=context, template_name=self.template_name)
 
 
@@ -174,6 +174,7 @@ class CheckListFormView(View):
             'manager_responsibility': counter.manager_count_score(),
             'production_responsibility': counter.production_count_score(),
             'status': counter.completeness_check(),
+            'title': 'Результат проверки',
         }
         return render(request=request, context=context, template_name=self.template_name)
 
@@ -226,4 +227,90 @@ def download_main_report(request):
                                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f"attachment;filename=report.xlsx"
     return response
+
+#   CORRECTION_REPORT
+
+def get_correction_report(request, control_event_id):
+
+    control_event = ControlEvent.objects.filter(id=control_event_id)[0]
+    correction_report = CorrectionReport.objects.filter(control_event=control_event_id)
+
+    if len(correction_report) == 0:
+        new_correction_report = CorrectionReport(
+            control_event=control_event, 
+            has_given=False, has_completed=False)
+        new_correction_report.save()
+        return redirect(reverse('get_correction_report', kwargs={'control_event_id': control_event_id}))
+
+    has_given = str
+    has_completed = str
+    
+    if correction_report[0].has_given == False: 
+        has_given = 'Не представлен'
+    else:
+        has_given = 'Представлен'
+
+    if correction_report[0].has_completed == False:
+        has_completed = 'Не отработан'
+    else:
+        has_completed = 'Отработан'
+
+    comments = CorrectionReportComment.objects.filter(correction_report_id=correction_report[0].id)
+    
+    context = {
+        'control_event': control_event,
+        'has_given': has_given,
+        'has_completed': has_completed,
+        'comment_list': comments,
+    }
+
+    return render(request, context=context, template_name='checks/correction_report.html')
+
+
+def change_correction_report(request, control_event_id):
+    
+    control_event = ControlEvent.objects.filter(id=control_event_id)[0]
+    correction_report = CorrectionReport.objects.filter(control_event=control_event_id)[0]
+
+    action = request.GET['change']
+    
+    if action == 'has_given':
+
+        if correction_report.has_given == False:
+            correction_report.has_given = True
+            correction_report.save()
+            return redirect(reverse('get_correction_report', kwargs={'control_event_id': control_event_id}))
+        else:
+            correction_report.has_given = False
+            correction_report.save()
+            return redirect(reverse('get_correction_report', kwargs={'control_event_id': control_event_id}))
+
+    if action == 'has_completed':
+        
+        if correction_report.has_completed == False:
+            correction_report.has_completed = True
+            correction_report.save()
+            return redirect(reverse('get_correction_report', kwargs={'control_event_id': control_event_id}))
+        else:
+            correction_report.has_completed = False
+            correction_report.save()
+            return redirect(reverse('get_correction_report', kwargs={'control_event_id': control_event_id}))
+
+
+def add_correction_report_comment(request, control_event_id):
+    
+    correction_report = CorrectionReport.objects.filter(control_event=control_event_id)[0]
+
+    comment = CorrectionReportComment(correction_report=correction_report, comment=request.POST['text'])
+    comment.save()
+
+    return redirect(reverse('get_correction_report', kwargs={'control_event_id': control_event_id}))
+
+
+def delete_correction_report_comment(request, control_event_id):
+    
+    deleting_comment = CorrectionReportComment.objects.filter(id=request.GET['id']).first() 
+    deleting_comment.delete()
+
+    return redirect(reverse('get_correction_report', kwargs={'control_event_id': control_event_id}))
     

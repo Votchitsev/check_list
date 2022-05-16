@@ -33,9 +33,9 @@
             <div class="right_column__common-information__description">Результат управляющего по производству (баллы)</div>
             <div class="right_column__common-information__result"><span class="score">{{production_responsibility}}</span></div>
         </div>
-                <a class="right-column__download-check-list" href="{% url 'download_check_list' control_event_id %}">
-                    <img src="https://img.icons8.com/ios/50/000000/download--v1.png"/>
-                    <span class="right-column__download-check-list__title">Загрузить чек-лист</span>
-                </a>
+        <a class="right-column__btn" href="{% url 'download_check_list' control_event_id %}">
+            <span class="right-column__btn-name">Загрузить чек-лист</span>
+        </a>
+        <a class="right-column__btn" href="{% url 'get_correction_report' control_event_id %}" target="_blank"><span class="right-column__btn-name">Отчёт об устранении недостатков</span></a>
+        <script src="{% static "/js/control_event_result.js" %}?v=1"></script>
 {% endblock %}
-

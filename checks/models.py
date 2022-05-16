@@ -46,3 +46,14 @@ class Result(models.Model):
 
     class Meta:
         unique_together = [['control_event', 'question', 'grade']]
+
+
+class CorrectionReport(models.Model):
+    control_event = models.ForeignKey(ControlEvent, on_delete=models.CASCADE)
+    has_given = models.BooleanField(verbose_name='Отчет представлен')
+    has_completed = models.BooleanField(verbose_name='Отчёт отработан')
+
+
+class CorrectionReportComment(models.Model):
+    correction_report = models.ForeignKey(CorrectionReport, on_delete=models.CASCADE)
+    comment = models.TextField(null=False)
