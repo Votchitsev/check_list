@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static "/css/style.css" %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300&display=swap" rel="stylesheet">
+    <title>Отчёт</title>
+</head>
+<body>
+    <div class="wrap correction_report_wrap">
+        <div class="main correction_report_wrap">
+            <h1 class="correction_report_header_one">Отчёт об устранении недостатков</h1>
+            <h2 class="correction_report_header_two">{{control_event}} </h2>
+            <div class="correction_report_providing_checking_container">
+                <a href="{% url 'change_correction_report' control_event.id %}?change=has_given" method="post" class="correction_report_providing_checking_container__item positive">{{has_given}}</a>
+                <a href="{% url 'change_correction_report' control_event.id %}?change=has_completed" method="post" class="correction_report_providing_checking_container__item negative">{{has_completed}}</a>
+            </div>
+            <ul class="correction_report_comments">
+                {% for comment in comment_list%}
+                <li class="correction_report_comments__item">
+                    <div class="correction_report_comments__item__content">{{comment.comment}}</div>
+                    <a href="{% url 'delete_correction_report_comment' control_event.id %}?id={{comment.id}}" method="delete" class="correction_report_comments__item__delete">удалить</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <form class="correction_report_comments_form" action="" method="post" action="{% url 'change_correction_report' control_event.id %} + 'add/'">
+                {% csrf_token %}
+                <textarea class="correction_report_comments_form__input" placeholder="Введите комментарий"></textarea>
+                <input class="correction_report_comments_form__submit" type="submit" value="OK">
+            </form>
+        </div>
+    </div>
+    <script src="{% static "/js/correction_report.js" %}?v=1"></script>
+</body>
+</html>
