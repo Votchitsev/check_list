@@ -1,7 +1,7 @@
 import io
 import xlsxwriter
 
-from checks.models import Result, ControlEvent
+from checks.models import Question, Result, ControlEvent
 from checks.servises.count_score_of_control_event import Counter
 
 
@@ -78,6 +78,53 @@ class MainReport:
             worksheet.write(row, 7, str(counter.is_poor_quality()))
             row += 1
 
+        workbook.close()
+        output.seek(0)
+
+        return output
+
+
+class BreachStatistics:
+
+    def __init__(self, start_date, finish_date):
+        self.start_date = start_date
+        self.finish_date = finish_date
+
+    def download_file(self):
+
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output)
+        worksheet = workbook.add_worksheet()
+        bold = workbook.add_format({'bold': True})
+
+        column_headers = ['Нарушение', 'Количество фактов', '% от общего числа нарушений']
+
+        question_count = {}
+
+        for result in Result.objects.filter(grade__name='Нет', control_event__date__range=[self.start_date, self.finish_date]):
+            
+            if result.question in question_count:
+                question_count[result.question] += 1
+
+            else:
+                question_count[result.question] = 1
+
+        question_count_sorted = {key: value for key, value in sorted(question_count.items(), key=lambda item: item[1], reverse=True)}
+        question_sum = sum([grade for grade in question_count.values()])
+
+        row = 0
+
+        for index, header in enumerate(column_headers):
+            worksheet.write(row, index, header, bold)
+
+        row += 1
+
+        for i in question_count_sorted.items():
+            worksheet.write(row, 0, str(i[0]))
+            worksheet.write(row, 1, str(i[1]))
+            worksheet.write(row, 2, round((i[1] / question_sum * 100), 2))
+            row += 1
+        
         workbook.close()
         output.seek(0)
 

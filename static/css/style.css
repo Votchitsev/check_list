@@ -114,15 +114,21 @@ color: black;
     font-weight: normal;
 }
 
+.main-report-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .main-report {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items:center;
     width: 400px;
     border: none;
     border-left: 2px solid #769276;
     padding: 15px;
     color: #769276;
+    justify-content: space-between;
 }
 
 .main-report__title {

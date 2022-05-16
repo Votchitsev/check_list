@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result, CorrectionReport, CorrectionReportComment
 from checks.servises.count_score_of_control_event import Counter
-from checks.servises.get_files import CheckListReport, MainReport
+from checks.servises.get_files import CheckListReport, MainReport, BreachStatistics
 from checks.servises.object_page import ObjectInformation
 
 
@@ -225,6 +225,18 @@ def download_main_report(request):
     report = MainReport(start_date, finish_date)
     response = HttpResponse(report.download_file(),
                                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f"attachment;filename=report.xlsx"
+    return response
+
+
+def download_brach_statistics(request):
+    start_date = request.GET['start_date']
+    finish_date = request.GET['finish_date']
+
+    report = BreachStatistics(start_date, finish_date)
+    report.download_file()
+
+    response = HttpResponse(report.download_file(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f"attachment;filename=report.xlsx"
     return response
 
