@@ -123,12 +123,13 @@ color: black;
     display: flex;
     flex-direction: column;
     align-items:center;
-    width: 400px;
+    width: 30%;
     border: none;
     border-left: 2px solid #769276;
     padding: 15px;
     color: #769276;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .main-report__title {
@@ -152,6 +153,7 @@ color: black;
     font-size: 20px;
     font-weight: normal;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 #start_date, #finish_date {
@@ -509,4 +511,9 @@ ul {
 
 .correction_report_comments_form__input:focus {
     border-color: #769276;
+}
+
+.ok {
+    width: 274px;
+    height: 40px;
 }
