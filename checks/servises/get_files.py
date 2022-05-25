@@ -68,7 +68,7 @@ class MainReport:
 
         for i in ControlEvent.objects.filter(date__range=[self.start_date, self.finish_date]).order_by('date'):
             counter = Counter(i.id)
-            worksheet.write(row, 0, str(i.date))
+            worksheet.write(row, 0, str(i.date.strftime("%d.%m.%Y")))
             worksheet.write(row, 1, str(i.object))
             worksheet.write(row, 2, counter.common_grade())
             worksheet.write(row, 3, counter.count_score())
@@ -150,7 +150,7 @@ def download_report_not_submited():
     row += 1
 
     for item in CorrectionReport.objects.filter(has_completed=False):
-        worksheet.write(row, 0, str(item.control_event.date))
+        worksheet.write(row, 0, str(item.control_event.date.strftime("%d.%m.%Y")))
         worksheet.write(row, 1, str(item.control_event.object.name))
         worksheet.write(row, 2, str(item.control_event.object.location))
                 
