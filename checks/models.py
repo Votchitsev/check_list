@@ -49,7 +49,7 @@ class Result(models.Model):
 
 
 class CorrectionReport(models.Model):
-    control_event = models.ForeignKey(ControlEvent, on_delete=models.CASCADE)
+    control_event = models.ForeignKey(ControlEvent, on_delete=models.CASCADE, related_name="correction_report")
     has_given = models.BooleanField(verbose_name='Отчет представлен')
     has_completed = models.BooleanField(verbose_name='Отчёт отработан')
 

@@ -1,7 +1,7 @@
 import io
 import xlsxwriter
 
-from checks.models import Question, Result, ControlEvent
+from checks.models import Question, Result, ControlEvent, CorrectionReport
 from checks.servises.count_score_of_control_event import Counter
 
 
@@ -125,6 +125,47 @@ class BreachStatistics:
             worksheet.write(row, 2, round((i[1] / question_sum * 100), 2))
             row += 1
         
+        workbook.close()
+        output.seek(0)
+
+        return output
+
+
+class ReportChecking:
+
+    queryset = CorrectionReport.objects.select_related('control_event').filter(has_completed=False).order_by('control_event')
+
+    def download_report_not_submited(self):
+
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output)
+        worksheet = workbook.add_worksheet()
+        bold = workbook.add_format({'bold': True})
+
+        column_headers = ['Дата проверки', 'Объект', 'Муниципалитет', 'Предостален ли отчёт']
+        
+        row = 0
+
+        for index, value in enumerate(column_headers):
+            worksheet.write(row, index, value, bold)
+        
+        row += 1
+
+        for item in self.queryset:
+            worksheet.write(row, 0, str(item.control_event.date))
+            worksheet.write(row, 1, str(item.control_event.object.name))
+            worksheet.write(row, 2, str(item.control_event.object.location))
+                
+            has_given = str()
+                
+            if item.has_given:
+                has_given = 'Представлен'
+            else:
+                has_given = 'Не представлен'
+
+            worksheet.write(row, 3, has_given)
+            row += 1
+
         workbook.close()
         output.seek(0)
 

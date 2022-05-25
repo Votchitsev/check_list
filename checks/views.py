@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result, CorrectionReport, CorrectionReportComment
 from checks.servises.count_score_of_control_event import Counter
-from checks.servises.get_files import CheckListReport, MainReport, BreachStatistics
+from checks.servises.get_files import CheckListReport, MainReport, BreachStatistics, ReportChecking
 from checks.servises.object_page import ObjectInformation
 
 
@@ -149,7 +149,8 @@ class ControlEventFormView(View):
         if form.is_valid():
             date = form.cleaned_data['date']
             obj = form.cleaned_data['object']
-            ControlEvent.objects.create(date=date, object=obj)
+            control_event = ControlEvent.objects.create(date=date, object=obj)
+            CorrectionReport.objects.create(control_event=control_event, has_given=False, has_completed=False)
             return redirect(reverse('control-event-list'))
         else:
             context = {'control_event_form': form}
@@ -240,6 +241,16 @@ def download_brach_statistics(request):
     response['Content-Disposition'] = f"attachment;filename=report.xlsx"
     return response
 
+
+def download_report_not_submited(request):
+    report = ReportChecking()
+
+    response = HttpResponse(report.download_report_not_submited(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f"attachment;filename=report.xlsx"
+
+    return response
+
+
 #   CORRECTION_REPORT
 
 def get_correction_report(request, control_event_id):
@@ -325,4 +336,3 @@ def delete_correction_report_comment(request, control_event_id):
     deleting_comment.delete()
 
     return redirect(reverse('get_correction_report', kwargs={'control_event_id': control_event_id}))
-    
