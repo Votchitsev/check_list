@@ -1,7 +1,7 @@
 import io
 import xlsxwriter
 
-from checks.models import Question, Result, ControlEvent, CorrectionReport
+from checks.models import Question, Result, ControlEvent, CorrectionReport, CorrectionReportComment
 from checks.servises.count_score_of_control_event import Counter
 
 
@@ -131,42 +131,50 @@ class BreachStatistics:
         return output
 
 
-class ReportChecking:
 
-    queryset = CorrectionReport.objects.select_related('control_event').filter(has_completed=False).order_by('control_event')
+    
+def download_report_not_submited():
 
-    def download_report_not_submited(self):
+    output = io.BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet()
+    bold = workbook.add_format({'bold': True})
 
-        output = io.BytesIO()
-        workbook = xlsxwriter.Workbook(output)
-        worksheet = workbook.add_worksheet()
-        bold = workbook.add_format({'bold': True})
-
-        column_headers = ['Дата проверки', 'Объект', 'Муниципалитет', 'Предостален ли отчёт']
+    column_headers = ['Дата проверки', 'Объект', 'Муниципалитет', 'Предоставлен ли отчёт', 'Комментарии']
         
-        row = 0
+    row = 0
 
-        for index, value in enumerate(column_headers):
-            worksheet.write(row, index, value, bold)
+    for index, value in enumerate(column_headers):
+        worksheet.write(row, index, value, bold)
         
+    row += 1
+
+    for item in CorrectionReport.objects.filter(has_completed=False):
+        worksheet.write(row, 0, str(item.control_event.date))
+        worksheet.write(row, 1, str(item.control_event.object.name))
+        worksheet.write(row, 2, str(item.control_event.object.location))
+                
+        has_given = str()
+            
+        if item.has_given:
+            has_given = 'Представлен'
+        else:
+            has_given = 'Не представлен'
+
+        worksheet.write(row, 3, has_given)
+            
+        if not item.has_completed:
+
+            comments = str()
+
+            for comment in CorrectionReportComment.objects.filter(correction_report=item):
+                comments += f"{comment.comment}\n"
+
+            worksheet.write(row, 4, comments)
+                               
         row += 1
 
-        for item in self.queryset:
-            worksheet.write(row, 0, str(item.control_event.date))
-            worksheet.write(row, 1, str(item.control_event.object.name))
-            worksheet.write(row, 2, str(item.control_event.object.location))
-                
-            has_given = str()
-                
-            if item.has_given:
-                has_given = 'Представлен'
-            else:
-                has_given = 'Не представлен'
+    workbook.close()
+    output.seek(0)
 
-            worksheet.write(row, 3, has_given)
-            row += 1
-
-        workbook.close()
-        output.seek(0)
-
-        return output
+    return output

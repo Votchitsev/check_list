@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result, CorrectionReport, CorrectionReportComment
 from checks.servises.count_score_of_control_event import Counter
-from checks.servises.get_files import CheckListReport, MainReport, BreachStatistics, ReportChecking
+from checks.servises.get_files import CheckListReport, MainReport, BreachStatistics, download_report_not_submited
 from checks.servises.object_page import ObjectInformation
 
 
@@ -150,7 +150,8 @@ class ControlEventFormView(View):
             date = form.cleaned_data['date']
             obj = form.cleaned_data['object']
             control_event = ControlEvent.objects.create(date=date, object=obj)
-            CorrectionReport.objects.create(control_event=control_event, has_given=False, has_completed=False)
+            correction_report = CorrectionReport(control_event=control_event, has_given=False, has_completed=False)
+            correction_report.save()
             return redirect(reverse('control-event-list'))
         else:
             context = {'control_event_form': form}
@@ -242,12 +243,9 @@ def download_brach_statistics(request):
     return response
 
 
-def download_report_not_submited(request):
-    report = ReportChecking()
-
-    response = HttpResponse(report.download_report_not_submited(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+def download_report_not_submited_view(request):   
+    response = HttpResponse(download_report_not_submited(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f"attachment;filename=report.xlsx"
-
     return response
 
 

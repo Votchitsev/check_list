@@ -20,7 +20,7 @@ from checks.views import start_view, get_objects_view, LocationFormView, Locatio
     ObjectFormView, LocationObjectsListView, ControlEventListView, ControlEventFormView, \
     delete_control_event_view, CheckListFormView, delete_check_list_view, logout_view, \
     download_check_list_file, object_page_view, download_main_report, get_correction_report, change_correction_report, \
-    add_correction_report_comment, delete_correction_report_comment, download_brach_statistics, download_report_not_submited
+    add_correction_report_comment, delete_correction_report_comment, download_brach_statistics, download_report_not_submited_view
 
 location_patterns = [
     path('list/', LocationListView.as_view(), name='location-list'),
@@ -57,5 +57,5 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('report/', download_main_report, name='download_main_report'),
     path('breach_statistics/', download_brach_statistics, name="download_brach_statistics"),
-    path('report_checking/report_not_submited/', download_report_not_submited, name="download_report_not_submited"),
+    path('report_checking/report_not_submited/', download_report_not_submited_view, name="download_report_not_submited"),
 ]
