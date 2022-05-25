@@ -6,7 +6,7 @@
                 {% for control_event in control_events %}
                 <a class="body-link" href="{% url 'control-event' control_event.id %}">
                     <div class="content_list__item">
-                        <div class="content_list__item__name">{{control_event.date)}} {{control_event.object}}</div>
+                        <div class="content_list__item__name">{{control_event.date}} {{control_event.object}}</div>
                         <div class="content_list__item__delete">
                             <a class="body-link" href="{% url 'control-event-delete' %}?control_event={{control_event.id}}">удалить</a>
                             </div>
