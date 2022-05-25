@@ -34,6 +34,7 @@ class Grade(models.Model):
 class ControlEvent(models.Model):
     date = models.DateField(verbose_name='Дата проверки')
     object = models.ForeignKey(Object, on_delete=models.CASCADE, verbose_name='Объект')
+    revizor = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return f"{self.date} {self.object}"

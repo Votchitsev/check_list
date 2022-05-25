@@ -5,6 +5,8 @@
         <div class="check_list__information">
             <div class="check_list__information__object">{{object}}</div>
             <div class="check_list__information__object">{{date}}</div>
+            <div class="check_list__information__object">({{revizor}})</div>
+            
         </div>
             <form class="check-list-form" action="{% url 'control-event' control_event_id %}" method="post">
                 {% csrf_token %}

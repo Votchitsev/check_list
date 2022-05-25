@@ -149,7 +149,7 @@ class ControlEventFormView(View):
         if form.is_valid():
             date = form.cleaned_data['date']
             obj = form.cleaned_data['object']
-            control_event = ControlEvent.objects.create(date=date, object=obj)
+            control_event = ControlEvent.objects.create(date=date, object=obj, revizor=f"{request.user.first_name} {request.user.last_name}")
             correction_report = CorrectionReport(control_event=control_event, has_given=False, has_completed=False)
             correction_report.save()
             return redirect(reverse('control-event-list'))
@@ -166,6 +166,11 @@ class CheckListFormView(View):
         control_event = ControlEvent.objects.filter(id=control_event_id)[0]
         counter = Counter(control_event_id)
 
+        if control_event.revizor != None:
+            revizor = control_event.revizor
+        else:
+            revizor = 'Не известно'
+        
         context = {
             'check_list_form': self.form_class(initial={'control_event': control_event}),
             'result': Result.objects.filter(control_event=control_event_id),
@@ -177,6 +182,7 @@ class CheckListFormView(View):
             'production_responsibility': counter.production_count_score(),
             'status': counter.completeness_check(),
             'title': 'Результат проверки',
+            'revizor': revizor,
         }
         return render(request=request, context=context, template_name=self.template_name)
 
