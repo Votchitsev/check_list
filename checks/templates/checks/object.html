@@ -4,13 +4,18 @@
 {% load static %}
 {% block main %}
 <div class="add_item"><a href="{% url 'object-create' %}">Добавить объект</a></div>
-            <div class="content_list">
-                {% for object in objects %}
-                <a href="{% url 'object-page' object.id %}">
+        {% for location in locations %}
+        <h1>{{location.name}}</h1>
+        <div class="list_container">
+            {% for object in objects %}
+                {% if object.location == location %}
+                <a href="{% url 'object-page' object.id %}" class="list_item">
                     <div class="content_list__item">
-                        <div class="content_list__item__name">{{object.name}} {{object.location}}</div>
+                        <div class="content_list__item__name">{{object.name}}</div>
                     </div>
                 </a>
-                {% endfor %}
-            </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
 {% endblock %}

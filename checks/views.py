@@ -26,50 +26,6 @@ def start_view(request):
     return render(request, template_name='checks/index.html')
 
 
-# LOCATION_VIEWS
-
-
-class LocationListView(ListView):
-    model = Location
-    template_name = 'checks/location.html'
-    context_object_name = 'locations'
-
-    def get_context_data(self, **kwargs):
-        context = super(LocationListView, self).get_context_data(**kwargs)
-        context['title'] = 'Муниципалитеты'
-        return context
-
-
-class LocationFormView(View):
-    form_class = CreateLocationForm
-    template_name = 'checks/create_location.html'
-
-    def get(self, request):
-        form = self.form_class()
-        context = {'form': form}
-        return render(request, context=context, template_name=self.template_name)
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            Location.objects.create(name=name)
-            return redirect(reverse('location-list'))
-        else:
-            context = {'form': form}
-            return render(request, context=context, template_name=self.template_name)
-
-
-class LocationObjectsListView(ListView):
-    model = Object
-    template_name = 'checks/object.html'
-    context_object_name = 'objects'
-
-    def get_queryset(self):
-        location = get_object_or_404(Location, id=self.kwargs['id'])
-        return Object.objects.filter(location=location)
-
-
 #   OBJECTS_VIEWS
 
 def object_page_view(request, object_id):
@@ -83,10 +39,13 @@ def object_page_view(request, object_id):
     return render(request, context=context, template_name='checks/object_page.html')
 
 
-def get_objects_view(request):
-    objects_list = Object.objects.all()
-    context = {'objects': objects_list,
-               'title': 'Объекты'}
+def get_objects_view(request, object_id=None):
+
+    context = {
+        'objects': Object.objects.all(),
+        'locations': Location.objects.all(),
+        }
+
     return render(request, context=context, template_name="checks/object.html")
 
 
@@ -115,16 +74,10 @@ class ObjectFormView(View):
 #   CONTROL_EVENT_VIEWS
 
 class ControlEventListView(ListView):
+    paginate_by = 27
     model = ControlEvent
     template_name = 'checks/control_event.html'
-
-    def get(self, *args, **kwargs):
-        control_events_list = self.get_queryset().order_by('-date')
-        context = {
-            'control_events': control_events_list,
-            'title': 'Проверки',
-            }
-        return render(self.request, context=context, template_name=self.template_name)
+    ordering = ['-date']
 
 
 @login_required

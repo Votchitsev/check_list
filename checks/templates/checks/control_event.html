@@ -2,16 +2,43 @@
 {% load static %}
 {% block main %}
 <div class="add_item"><a href="{% url 'control-event-create' %}">Добавить проверку</a></div>
-            <div class="content_list">
-                {% for control_event in control_events %}
-                <a class="body-link" href="{% url 'control-event' control_event.id %}">
-                    <div class="content_list__item">
-                        <div class="content_list__item__name">{{control_event.date}} {{control_event.object}}</div>
-                        <div class="content_list__item__delete">
-                            <a class="body-link" href="{% url 'control-event-delete' %}?control_event={{control_event.id}}">удалить</a>
-                            </div>
+            <div class="list_container">
+                {% for control_event in page_obj %}
+                <a href="{% url 'control-event' control_event.id %}" class="list_item">
+                    <div class="list_item__object">{{control_event.object.name}}</div>
+                    <div class="list_item__locationdate_container">
+                        <div class="list_item__locationdate_item">{{control_event.object.location}}</div>
+                        <div class="list_item__locationdate_item">{{control_event.date|date:'d.m.Y'}}</div>
                     </div>
-                </a>
+                    <object class="list_item__delete">
+                        <a href="{% url 'control-event-delete' %}?control_event={{control_event.id}}">x</a>
+                    </object>
+                </a>               
                 {% endfor %}
             </div>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1" class="pagination_pointer">&#171;</a>
+        <a href="?page={{ page_obj.previous_page_number }}" class="pagination_pointer">&#8249;</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination_pointer">&#8250</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination_pointer">&#187</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}
+
+<!-- <div class="control_event___item">
+    <a class="body-link" href="{% url 'control-event' control_event.id %}"></a>
+    <div class="content_list__item__name">{{control_event.date}} {{control_event.object}}</div>
+    <div class="content_list__item__delete">
+        <a class="body-link" href="{% url 'control-event-delete' %}?control_event={{control_event.id}}">удалить</a>
+        </div>
+</div> -->

@@ -16,17 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from checks.views import start_view, get_objects_view, LocationFormView, LocationListView, \
-    ObjectFormView, LocationObjectsListView, ControlEventListView, ControlEventFormView, \
+from checks.views import start_view, get_objects_view, ObjectFormView, ControlEventListView, ControlEventFormView, \
     delete_control_event_view, CheckListFormView, delete_check_list_view, logout_view, \
     download_check_list_file, object_page_view, download_main_report, get_correction_report, change_correction_report, \
     add_correction_report_comment, delete_correction_report_comment, download_brach_statistics, download_report_not_submited_view
 
-location_patterns = [
-    path('list/', LocationListView.as_view(), name='location-list'),
-    path('create/', LocationFormView.as_view(), name='location-create'),
-    path('<int:id>/', LocationObjectsListView.as_view(), name='location'),
-]
 
 object_patterns = [
     path('list/', get_objects_view, name='object-list'),
@@ -50,7 +44,6 @@ control_event_patterns = [
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', start_view, name='start_page'),
-    path('location/', include(location_patterns)),
     path('object/', include(object_patterns)),
     path('control_event/', include(control_event_patterns)),
     path('accounts/', include('django.contrib.auth.urls')),
