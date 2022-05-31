@@ -572,17 +572,74 @@ ul {
     height: 40px;
 }
 
-.authorization-form {
+.autorirization {
     position: fixed;
-    top: 4vw;
-    bottom: auto;
-}
-
-.authorization-form::after {
-    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     background-color: rgba(33, 34, 35, 0.6);
+}
+
+.authorization-form {
+    height: 300px;
+    width: 300px;
+    position: fixed;
+    left:0;
+    right: 0;
+    top: 15vh;
+    bottom: auto;
+    background-color:#f2f5f2;
+    padding: 20px;
+    margin: auto;
+    z-index: 1;
+}
+
+.authorization-form__header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 35px;
+}
+
+#id_username, #id_password {
+    width: 100%;    
+    box-sizing: border-box;
+    height: 40px;
+    margin-bottom: 15px;
+    background-color:#e6e9e6;
+    border: none;
+    padding: 10px;
+}
+
+.authorization-form__container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#id_username:focus, #id_password:focus {
+    border: 2px solid #769276;
+    outline: 0;
+}
+
+.form_submit_btn {
+    background-color: #769276;
+    color: #e6e9e6;
+    width: 100%;
+    height: 40px;
+    margin-top: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.authorization-form__close {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    font-size: larger;
+    font-weight: bold;
+    color:#d3e2d4
 }

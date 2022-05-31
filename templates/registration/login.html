@@ -2,25 +2,21 @@
 {% extends "checks/index.html" %}
 
 {% load static %}
-{% block aside %}
-<div class="authorization-form">
+{% block main %}
+<div class="autorirization">
+  <div class="authorization-form">
     <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-        <table>
-
-<tr>
-  <td>{{ form.username.label_tag }}</td>
-  <td>{{ form.username }}</td>
-</tr>
-
-<tr>
-  <td>{{ form.password.label_tag }}</td>
-  <td>{{ form.password }}</td>
-</tr>
-</table>
-
-<input type="submit" value="login" />
-<!--<input type="hidden" name="next" value="{{ next }}" />-->
+      {% csrf_token %}
+      <div class="authorization-form__container">
+        <h1 class="authorization-form__header">Пожалуйста, авторизуйтесь</h1>
+        <div>{{ form.username }}</div>
+        <div>{{ form.password }}</div>
+      </div>
+      <input class="form_submit_btn" type="submit" value="Войти"/>
+      <input type="hidden" name="next" value="{{ next }}"/>
+      <a href="" class="authorization-form__close">x</a>
     </form>
+  </div>
 </div>
+<script src="../../static/js/autorizationForm.js"></script>
 {% endblock %}
