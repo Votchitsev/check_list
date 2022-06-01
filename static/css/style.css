@@ -277,11 +277,20 @@ label {
 }
 
 .check_list__position {
-    background-color: #99a99a45;
+    position: relative;
     margin-top: 5px;
     display: flex;
     padding: 5px;
     border-left: 5px solid #99a99a;
+}
+
+.check_list__position:hover {
+    background-color:#f2f5f2;
+}
+
+.check_list__position:hover
+.list_item__delete {
+    visibility: visible;
 }
 
 .check_list__position__question {
@@ -293,9 +302,15 @@ label {
 .check_list__position__grade {
     font-size: 20px;
     display: inline-block;
-    width: 132px;
+    width: 70px;
+    height: fit-content;
     text-align: center;
-    vertical-align: middle;
+    align-self: center;
+    background-color: #cfc8c8;
+    padding: 2px 0 7px 0;
+    border-radius: 23px;
+    color: #f4f5f4;
+    font-weight: bold;
 }
 
 .check_list__position__delete {

@@ -131,8 +131,6 @@ class BreachStatistics:
 
         return output
 
-
-
     
 def download_report_not_submited():
 

@@ -4,8 +4,8 @@
     <div class="check_list">
         <div class="check_list__information">
             <div class="check_list__information__object">{{object}}</div>
-            <div class="check_list__information__object">{{date}}</div>
-            <div class="check_list__information__object">({{revizor}})</div>
+            <div class="check_list__information__object">{{date|date:"d.m.Y"}}</div>
+            <div class="check_list__information__object">Ревизор: {{revizor}}</div>
             
         </div>
             <form class="check-list-form" action="{% url 'control-event' control_event_id %}" method="post">
@@ -17,7 +17,7 @@
                 <div class="check_list__position">
                     <div class="check_list__position__question">{{r.question}}</div>
                     <div class="check_list__position__grade">{{r.grade}}</div>
-                    <div class="check_list__position__delete"><a href="{% url 'delete-check-list-position' %}?control_event_position_id={{r.id}}&control_event_id={{control_event_id}}">[X]</a> </div>
+                    <object class="list_item__delete"><a href="{% url 'delete-check-list-position' %}?control_event_position_id={{r.id}}&control_event_id={{control_event_id}}">x</a></object>
                 </div>
                 {% endfor %}
             </div>
