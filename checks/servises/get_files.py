@@ -97,7 +97,7 @@ class BreachStatistics:
         worksheet = workbook.add_worksheet()
         bold = workbook.add_format({'bold': True})
 
-        column_headers = ['Нарушение', 'Количество фактов', '% от общего числа нарушений']
+        column_headers = ['Нарушение', 'Количество фактов', '% от общего числа нарушений', '% проверок от общего числа, в которых встречается нарушение']
 
         question_count = {}
 
@@ -123,6 +123,7 @@ class BreachStatistics:
             worksheet.write(row, 0, str(i[0]))
             worksheet.write(row, 1, str(i[1]))
             worksheet.write(row, 2, round((i[1] / question_sum * 100), 2))
+            worksheet.write(row, 3, round((i[1] / ControlEvent.objects.filter(date__range=[self.start_date, self.finish_date]).count()) * 100))
             row += 1
         
         workbook.close()
