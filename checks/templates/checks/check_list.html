@@ -17,24 +17,20 @@
         <form class="check-list-form" action="{% url 'check_list_form' control_event_id %}" method="post">
         {% csrf_token %}
         {% for question in questions %}
-            <!-- <fieldset> -->
-                <!-- <legend>{{ question.text }}</legend> -->
-                    <div class="check-list-form__item">
-                        <h4>{{ question.text }}</h4>
-                        <div class="check-list-form__choose-container">
-                            <label class="check-list-form__label" for="answer-yes">Да</label>
-                            <input type="radio" id="answer-yes" name="{{ question.id }}" value="Да">
-                            <label class="check-list-form__label" for="answer-no">Нет</label>
-                            <input type="radio" id="answer-no" name="{{ question.id }}" value="Нет">
-                            <label class="check-list-form__label" for="not-evaluated">Не оценивался</label>
-                            <input type="radio" name="{{ question.id }}" value="Н/о">
-                        </div>
-                    </div>
-            <!-- </fieldset> -->
+            <div class="check-list-form__item">
+                <h4>{{ question.text }}</h4>
+                <div class="check-list-form__choose-container">
+                    <label class="check-list-form__label" for="answer-yes">Да</label>
+                    <input type="radio" id="answer-yes" name="{{ question.id }}" value="Да">
+                    <label class="check-list-form__label" for="answer-no">Нет</label>
+                    <input type="radio" id="answer-no" name="{{ question.id }}" value="Нет">
+                    <label class="check-list-form__label" for="not-evaluated">Не оценивался</label>
+                    <input type="radio" name="{{ question.id }}" value="Н/о">
+                </div>
+            </div>
         {% endfor %}
             <input type="submit" value="Добавить">
         </form>
     </div>   
-    <!-- <script src="{% static "/js/correction_report.js" %}?v=1"></script> -->
 </body>
 </html>

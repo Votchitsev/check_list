@@ -69,23 +69,3 @@ class ControlEventForm(ModelForm):
             raise ValidationError('Вводимая Вами дата ещё не наступила!')
 
         return self.cleaned_data['date']
-
-
-class CheckListForm(ModelForm):
-
-    class Meta:
-        model = Result
-        fields = ['control_event', 'question', 'grade']
-        widgets = {
-            'grade': RadioSelect(),
-            'control_event': HiddenInput()
-        }
-
-    def clean_question(self):
-        control_event = self.cleaned_data['control_event']
-        question = self.cleaned_data['question']
-        if Result.objects.filter(control_event=control_event, question=question).exists():
-            raise ValidationError('Вопрос уже есть!')
-        return self.cleaned_data['question']
-
-

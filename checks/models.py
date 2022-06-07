@@ -42,7 +42,7 @@ class ControlEvent(models.Model):
 
 class Result(models.Model):
     control_event = models.ForeignKey(ControlEvent, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Вопрос')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Вопрос', related_name='question')
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE, verbose_name='Оценка')
 
     class Meta:

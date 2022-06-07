@@ -112,15 +112,20 @@ class Counter:
             return 'Отлично'
 
     def is_overdue_food(self):
-
-        if str(self.result_object.filter(question_id=33)[0].grade) == 'Нет':
-            return 'Да'
-        else:
-            return 'Нет'
+        try:
+            if str(self.result_object.filter(question_id=33)[0].grade) == 'Нет':
+                return 'Да'
+            else:
+                return 'Нет'
+        except IndexError:
+            return '-'
 
     def is_poor_quality(self):
-        if str(self.result_object.filter(question_id=34)[0].grade) == 'Нет':
-            return 'Да'
-        else:
-            return 'Нет'
+        try:
+            if str(self.result_object.filter(question_id=34)[0].grade) == 'Нет':
+                return 'Да'
+            else:
+                return 'Нет'
+        except IndexError:
+            return '-'
         

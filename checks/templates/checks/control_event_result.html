@@ -8,11 +8,6 @@
             <div class="check_list__information__object">Ревизор: {{revizor}}</div>
             
         </div>
-            <form class="check-list-form" action="{% url 'control-event' control_event_id %}" method="post">
-                {% csrf_token %}
-                {{check_list_form}}
-                <input type="submit" value="Добавить">
-            </form>
                 {% for r in result %}
                 <div class="check_list__position">
                     <div class="check_list__position__question">{{r.question}}</div>
@@ -39,5 +34,6 @@
             <span class="right-column__btn-name">Загрузить чек-лист</span>
         </a>
         <a class="right-column__btn" href="{% url 'get_correction_report' control_event_id %}" target="_blank"><span class="right-column__btn-name">Отчёт об устранении недостатков</span></a>
-        <script src="{% static "/js/control_event_result.js" %}?v=1"></script>
+        <a class="right-column__btn" href="{% url 'check_list_form' control_event_id %}"><span class="right-column__btn-name">Добавить чек-лист</span></a>
+        <script src="{% static "/js/control_event_result.js" %}?v=07062022"></script>
 {% endblock %}

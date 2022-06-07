@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.http import HttpResponse
 
-from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm, CheckListForm
+from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result, CorrectionReport, CorrectionReportComment
 from checks.servises.count_score_of_control_event import Counter
 from checks.servises.get_files import CheckListReport, MainReport, BreachStatistics, download_report_not_submited
@@ -111,8 +111,8 @@ class ControlEventFormView(View):
             return render(request, context=context, template_name=self.template_name)
 
 
-class CheckListFormView(View):
-    form_class = CheckListForm
+class ControlEventView(View):
+
     template_name = 'checks/control_event_result.html'
 
     def get(self, request, control_event_id):
@@ -125,8 +125,8 @@ class CheckListFormView(View):
             revizor = 'Не известно'
         
         context = {
-            'check_list_form': self.form_class(initial={'control_event': control_event}),
             'result': Result.objects.filter(control_event=control_event_id),
+            'questions': Question.objects.all(),
             'control_event_id': control_event_id,
             'object': control_event.object,
             'date': control_event.date,
@@ -134,33 +134,36 @@ class CheckListFormView(View):
             'manager_responsibility': counter.manager_count_score(),
             'production_responsibility': counter.production_count_score(),
             'status': counter.completeness_check(),
-            'title': 'Результат проверки',
             'revizor': revizor,
         }
         return render(request=request, context=context, template_name=self.template_name)
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        control_event_id = self.kwargs['control_event_id']
-        control_event = ControlEvent.objects.filter(id=control_event_id)[0]
-        if form.is_valid():
-            new_result_object = Result(
-                control_event=control_event,
-                question=form.cleaned_data['question'],
-                grade=form.cleaned_data['grade']
-            )
-            new_result_object.save()
-            return redirect(reverse('control-event', kwargs={'control_event_id': control_event_id}))
-        else:
-            result = Result.objects.filter(control_event=control_event_id)
-            context = {
-                'check_list_form': form,
-                'result': result,
-                'control_event_id': control_event_id,
-                'object': control_event.object,
-                'date': control_event.date,
-            }
-            return render(request, context=context, template_name=self.template_name)
+
+@login_required
+def check_list_form(request, control_event_id):
+    
+    if request.method == 'GET':
+        questions_not_exists = Question.objects.exclude(question__control_event_id=control_event_id)
+        
+        context = {
+            'questions': questions_not_exists,
+            'control_event_id': control_event_id
+        }
+
+        return render(request, context=context, template_name='checks/check_list.html')
+
+    if request.method == 'POST':
+
+        for i in request.POST.dict():
+            if i == 'csrfmiddlewaretoken':
+                continue
+            result = Result(
+                control_event = ControlEvent.objects.get(id=control_event_id),
+                question = Question.objects.get(id=i),
+                grade = Grade.objects.get(name=request.POST.__getitem__(i)),
+                )
+            result.save()
+        return redirect(reverse('control-event', kwargs={'control_event_id': control_event_id}))
 
 
 @login_required
