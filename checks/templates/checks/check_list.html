@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static "/css/style.css" %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300&display=swap" rel="stylesheet">
+    <title>Отчёт</title>
+</head>
+<body>
+    <div class="check-list-wrap">
+        <h1>Чек-лист</h1>
+        <form class="check-list-form" action="{% url 'check_list_form' control_event_id %}" method="post">
+        {% csrf_token %}
+        {% for question in questions %}
+            <!-- <fieldset> -->
+                <!-- <legend>{{ question.text }}</legend> -->
+                    <div class="check-list-form__item">
+                        <h4>{{ question.text }}</h4>
+                        <div class="check-list-form__choose-container">
+                            <label class="check-list-form__label" for="answer-yes">Да</label>
+                            <input type="radio" id="answer-yes" name="{{ question.id }}" value="Да">
+                            <label class="check-list-form__label" for="answer-no">Нет</label>
+                            <input type="radio" id="answer-no" name="{{ question.id }}" value="Нет">
+                            <label class="check-list-form__label" for="not-evaluated">Не оценивался</label>
+                            <input type="radio" name="{{ question.id }}" value="Н/о">
+                        </div>
+                    </div>
+            <!-- </fieldset> -->
+        {% endfor %}
+            <input type="submit" value="Добавить">
+        </form>
+    </div>   
+    <!-- <script src="{% static "/js/correction_report.js" %}?v=1"></script> -->
+</body>
+</html>

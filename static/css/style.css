@@ -321,12 +321,6 @@ label {
     margin-left: 35px;
 }
 
-.check-list-form {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    }
-
 #id_grade {
     display: flex;
 }
@@ -657,4 +651,58 @@ ul {
     font-size: larger;
     font-weight: bold;
     color:#d3e2d4
+}
+
+/* Check_list*/
+
+.check-list-wrap {
+    width: 1200px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.check-list-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 100px;
+    }
+
+.check-list-form__item {
+    margin: 5px 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 5px 1px grey;
+    background-color:#e6e9e6;
+    border-radius: 10px;
+}
+
+.check-list-form__choose-container {
+    display: flex;
+    justify-content: center;
+}
+
+input[type='radio'] {
+    align-self: center;
+    width: 20px;
+    height: 20px;
+}
+
+.check-list-form__label:nth-child(n+2) {
+    margin-left: 15px;
+}
+
+input[type='submit'] {
+    width: 200px;
+    height: 50px;
+    margin-top: 20px;
+    align-self: end;
+    border: none;
+    background-color:#769276;
+    font: inherit;
+    color: #f4f5f4;
+    cursor: pointer;
 }
