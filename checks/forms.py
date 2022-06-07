@@ -2,7 +2,7 @@ import datetime
 
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, TextInput, Select, SelectDateWidget, CheckboxInput, CheckboxSelectMultiple, \
-    RadioSelect, HiddenInput
+    RadioSelect, HiddenInput, DateInput
 
 from checks.models import Location, Object, ControlEvent, Result
 
@@ -62,8 +62,15 @@ class ControlEventForm(ModelForm):
     class Meta:
         model = ControlEvent
         fields = ['date', 'object']
+        labels = {
+            'date': '',
+            'object': '',
+        }
         widgets = {
-            'date': SelectDateWidget(),
+            'date': DateInput(
+                format=('%d.%m.%Y'),
+                attrs = {'type': 'date'}
+            ),
             'object': Select()
         }
 

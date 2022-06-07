@@ -1,10 +1,14 @@
 {% extends "checks/index.html" %}
 {% load static %}
 {% block main %}
+<div class="authorization">
     <form class="create__location" action="{% url 'control-event-create' %}" method="post">
+        <h1 class="form-title">Создание проверки</h1>
                 {% csrf_token %}
                 {{ control_event_form }}<br>
-        <input type="submit" value="Добавить">
-        <button type="reset">Отменить</button>
-            </form>
+        <input class="form_submit_btn" type="submit" value="Добавить">
+        <a href="" class="form-close">x</a>
+    </form>
+</div>
+<script src="{% static "/js/createControlEventForm.js" %}?v=07062022"></script>
 {% endblock %}

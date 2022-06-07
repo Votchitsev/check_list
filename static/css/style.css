@@ -191,7 +191,6 @@ label {
 .list_item:hover {
     background-color: #f4f5f4;
     color: #425342;
-    /* box-shadow: 1px 2px 1px rgb(201, 189, 189); */
 }
 
 .list_item:hover 
@@ -620,7 +619,8 @@ ul {
     margin-bottom: 35px;
 }
 
-#id_username, #id_password, #id_name, #id_location {
+#id_username, #id_password, #id_name, #id_location,
+#id_date, #id_object {
     width: 100%;
     box-sizing: border-box;
     height: 40px;
@@ -637,7 +637,7 @@ ul {
 }
 
 #id_username:focus, #id_password:focus,
-#id_name:focus, #id_location:focus {
+#id_name:focus, #id_location:focus  {
     border: 2px solid #769276;
     outline: 0;
 }
