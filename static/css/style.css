@@ -264,9 +264,8 @@ label {
     top: 15vh;
     margin: auto;
     padding: 20px;
-    font-size: 30px;
     text-align: left;
-    width: 400px;
+    width: 300px;
     background-color: #f2f5f2;
 }
 
@@ -614,15 +613,15 @@ ul {
     z-index: 1;
 }
 
-.authorization-form__header {
+.form-title {
     text-align: center;
     font-weight: bold;
     font-size: 1.2em;
     margin-bottom: 35px;
 }
 
-#id_username, #id_password {
-    width: 100%;    
+#id_username, #id_password, #id_name, #id_location {
+    width: 100%;
     box-sizing: border-box;
     height: 40px;
     margin-bottom: 15px;
@@ -637,7 +636,8 @@ ul {
     flex-direction: column;
 }
 
-#id_username:focus, #id_password:focus {
+#id_username:focus, #id_password:focus,
+#id_name:focus, #id_location:focus {
     border: 2px solid #769276;
     outline: 0;
 }
@@ -654,7 +654,7 @@ ul {
     text-transform: uppercase;
 }
 
-.authorization-form__close {
+.form-close {
     position: absolute;
     top: -30px;
     right: 0;
@@ -705,14 +705,7 @@ input[type='radio'] {
     margin-left: 15px;
 }
 
-input[type='submit'] {
-    width: 200px;
-    height: 50px;
-    margin-top: 20px;
+.check-list-submit-btn {
+    width: 150px;
     align-self: end;
-    border: none;
-    background-color:#769276;
-    font: inherit;
-    color: #f4f5f4;
-    cursor: pointer;
 }

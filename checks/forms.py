@@ -33,14 +33,17 @@ class CreateObjectForm(ModelForm):
     class Meta:
         model = Object
         fields = ['name', 'location']
+        labels = {
+            'name': '',
+            'location': '',
+        }
         widgets = {
             'name': TextInput(attrs={
                 'placeholder': 'Название объекта',
-                'size': 40
             }),
             'location': Select(attrs={
                 'placeholder': 'Выберите район',
-                'width': 40}
+                'width': 50}
             )
         }
 

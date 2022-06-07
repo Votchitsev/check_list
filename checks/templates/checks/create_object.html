@@ -4,8 +4,11 @@
 {% block main %}
 <div class="authorization">
     <form class="create__location" action="{% url 'object-create' %}" method="post">{% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Добавить">
+    <h1 class="form-title">Создание объекта</h1>
+        {{ form }}
+    <input class="form_submit_btn" type="submit" value="Добавить">
+    <a href="" class="form-close">x</a>
     </form>
 </div>
+<script src="{% static "/js/createObjectForm.js" %}?v=07062022"></script>
 {% endblock %}
