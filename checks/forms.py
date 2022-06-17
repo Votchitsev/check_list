@@ -1,8 +1,9 @@
 import datetime
+from pprint import pprint
 
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, TextInput, Select, SelectDateWidget, CheckboxInput, CheckboxSelectMultiple, \
-    RadioSelect, HiddenInput, DateInput
+    RadioSelect, HiddenInput, DateInput, ModelChoiceField
 
 from checks.models import Location, Object, ControlEvent, Result
 
@@ -58,13 +59,13 @@ class CreateObjectForm(ModelForm):
 
 
 class ControlEventForm(ModelForm):
+    object = ModelChoiceField(queryset=Object.objects.order_by('location'), label='')
 
     class Meta:
         model = ControlEvent
         fields = ['date', 'object']
         labels = {
             'date': '',
-            'object': '',
         }
         widgets = {
             'date': DateInput(
