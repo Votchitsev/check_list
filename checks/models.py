@@ -1,8 +1,14 @@
 from django.db import models
 
 
+class ExecutiveDirector(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+
+
 class Location(models.Model):
     name = models.CharField(max_length=30, null=False, verbose_name='Наименование района', unique=True)
+    executive_director = models.ForeignKey(ExecutiveDirector, on_delete=models.CASCADE, related_name='executive_director', null=True)
 
     def __str__(self):
         return self.name
