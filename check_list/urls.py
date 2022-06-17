@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth.decorators import login_required
 
 from checks.views import start_view, get_objects_view, ObjectFormView, ControlEventListView, ControlEventFormView, \
     delete_control_event_view, ControlEventView, delete_check_list_view, logout_view, \
@@ -30,7 +31,7 @@ object_patterns = [
 
 control_event_patterns = [
     path('list/', ControlEventListView.as_view(), name='control-event-list'),
-    path('create/', ControlEventFormView.as_view(), name='control-event-create'),
+    path('create/', login_required(ControlEventFormView.as_view()), name='control-event-create'),
     path('delete/', delete_control_event_view, name='control-event-delete'),
     path('<int:control_event_id>/', ControlEventView.as_view(), name='control-event'),
     path('delete_position/', delete_check_list_view, name='delete-check-list-position'),

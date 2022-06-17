@@ -28,9 +28,9 @@
                 </li>
                 {% endfor %}
             </ul>
-            <form class="correction_report_comments_form" action="" method="post" action="{% url 'change_correction_report' control_event.id %} + 'add/'">
+            <form class="correction_report_comments_form" method="post" action="{% url 'add_correction_report_comment' control_event.id %}">
                 {% csrf_token %}
-                <textarea class="correction_report_comments_form__input" placeholder="Введите комментарий"></textarea>
+                <textarea class="correction_report_comments_form__input" placeholder="Введите комментарий" name="text"></textarea>
                 <input class="correction_report_comments_form__submit" type="submit" value="OK">
             </form>
         </div>

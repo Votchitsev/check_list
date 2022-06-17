@@ -20,21 +20,3 @@ if (hasCompletedDiv.textContent == 'Не отработан') {
     hasCompletedDiv.classList.add('positive');
     hasCompletedDiv.classList.remove('negative');
 }
-
-form.addEventListener('submit', (e) => {
-    
-    e.preventDefault();
-
-    let xhr = new XMLHttpRequest();
-
-    xhr.open('POST', document.referrer + 'add/');
-    xhr.setRequestHeader("X-CSRFToken", document.cookie.split('=')[1])
-
-    let formData = new FormData(form);
-    formData.append('text', commentText.value);
-    
-    xhr.send(formData);
-
-    document.location.reload();
-
-});
