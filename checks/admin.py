@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from checks.models import Location, Object, Question, Grade, ControlEvent, Result
+from checks.models import Location, Object, Question, Grade, ControlEvent, Result, ExecutiveDirector
 
 
 class ObjectInline(admin.TabularInline):
@@ -31,3 +31,7 @@ class GradeAdmin(admin.ModelAdmin):
 @admin.register(ControlEvent)
 class ControlEventAdmin(admin.ModelAdmin):
     inlines = [ResultInline]
+
+@admin.register(ExecutiveDirector)
+class ExecutiveDirectorAdmin(admin.ModelAdmin):
+    pass

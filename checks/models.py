@@ -5,6 +5,9 @@ class ExecutiveDirector(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Location(models.Model):
     name = models.CharField(max_length=30, null=False, verbose_name='Наименование района', unique=True)
