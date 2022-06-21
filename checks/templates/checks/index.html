@@ -4,7 +4,7 @@
 
 <html lang='ru'>
 	<head>
-	    <link href="{% static "/css/style.css" %}?v=25052022" rel="stylesheet">
+	    <link href="{% static "/css/style.css" %}?v=21062022" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300&display=swap" rel="stylesheet">
@@ -67,6 +67,26 @@
                         <h2 class="main-report__title">Информация<br> о не закрытых отчётах<br> об устранении нарушений</h2>
                         <form action="/report_checking/report_not_submited/" method="get" class="main-report-form">
                             <input id="submit" class="ok" type="submit" value="ОК">
+                        </form>
+                    </div>
+                    <div class="main-report">
+                        <h2 class="main-report__title">Отчёт о проверках<br> по исполнительному директору</h2>
+                        <form action="ex_direct_report/" method="get" class="main-report-form">
+                            <label for="start_date">Начальная дата:
+                                <input id="start_date" type="date" name="start_date" required>
+                            </label>
+                            <label for="finish_date">Конечная дата:
+                                <input id="finish_date" type="date" name="finish_date" required>
+                            </label>
+                            <label class="main-report__executive-director-cintainer" for="execute_director">Исполнительный директор:
+                                <select id="executive_director" name="executive_director" required>
+                                    <option disabled selected>Выберите героя ...</option>
+                                    {% for executive_director in executive_directors %}
+                                    <option value="{{ executive_director.id }}">{{ executive_director }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                            <input id="submit" type="submit" value="ОК">
                         </form>
                     </div>
                 </div>

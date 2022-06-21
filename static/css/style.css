@@ -172,6 +172,24 @@ label {
     justify-content: space-between;
 }
 
+.main-report__executive-director-cintainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+#executive_director {
+    width: 100%;
+    margin-top: 10px;
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid #425342;
+}
+
+#executive_director:focus {
+    outline: none;
+}
+
 .list_container {
     display: flex;
     flex-wrap: wrap;

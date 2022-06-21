@@ -48,9 +48,10 @@ class CheckListReport:
 
 
 class MainReport:
-    def __init__(self, start_date, finish_date):
+    def __init__(self, start_date, finish_date, executive_director=None):
         self.start_date = start_date
         self.finish_date = finish_date
+        self.executive_director = executive_director
 
     def download_file(self):
         output = io.BytesIO()
@@ -66,7 +67,20 @@ class MainReport:
             worksheet.write(row, index, header, bold)
         row += 1
 
-        for i in ControlEvent.objects.filter(date__range=[self.start_date, self.finish_date]).order_by('date'):
+        control_events = None
+
+        if self.executive_director != None:
+            control_events = ControlEvent.objects.filter(
+                date__range=[self.start_date, 
+                self.finish_date], object__location__executive_director=self.executive_director
+                ).order_by('date')
+        else:
+            control_events = ControlEvent.objects.filter(
+                date__range=[self.start_date, 
+                self.finish_date]
+                ).order_by('date')
+
+        for i in control_events:
             counter = Counter(i.id)
             worksheet.write(row, 0, str(i.date.strftime("%d.%m.%Y")))
             worksheet.write(row, 1, str(i.object))

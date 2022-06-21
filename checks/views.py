@@ -8,7 +8,7 @@ from django.contrib.auth import logout
 from django.http import HttpResponse
 
 from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm
-from checks.models import Object, Location, ControlEvent, Question, Grade, Result, CorrectionReport, CorrectionReportComment
+from checks.models import Object, Location, ControlEvent, Question, Grade, Result, CorrectionReport, CorrectionReportComment, ExecutiveDirector
 from checks.servises.count_score_of_control_event import Counter
 from checks.servises.get_files import CheckListReport, MainReport, BreachStatistics, download_report_not_submited
 from checks.servises.object_page import ObjectInformation
@@ -22,8 +22,10 @@ def logout_view(request):
 
 
 def start_view(request):
-    
-    return render(request, template_name='checks/index.html')
+    context = {
+        'executive_directors': ExecutiveDirector.objects.filter(is_worked=True)
+    }
+    return render(request, context=context, template_name='checks/index.html')
 
 
 #   OBJECTS_VIEWS
@@ -185,7 +187,7 @@ def download_check_list_file(request, control_event_id):
 def download_main_report(request):
     start_date = request.GET['start_date']
     finish_date = request.GET['finish_date']
-    
+
     report = MainReport(start_date, finish_date)
     response = HttpResponse(report.download_file(),
                                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -207,6 +209,20 @@ def download_brach_statistics(request):
 
 def download_report_not_submited_view(request):   
     response = HttpResponse(download_report_not_submited(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f"attachment;filename=report.xlsx"
+    return response
+
+
+def ex_director_report_view(request):
+    report = MainReport(
+        request.GET['start_date'],
+        request.GET['finish_date'],
+        request.GET['executive_director']
+    )
+    response = HttpResponse(
+        report.download_file(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
     response['Content-Disposition'] = f"attachment;filename=report.xlsx"
     return response
 

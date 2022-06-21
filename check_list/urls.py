@@ -20,7 +20,8 @@ from django.contrib.auth.decorators import login_required
 from checks.views import start_view, get_objects_view, ObjectFormView, ControlEventListView, ControlEventFormView, \
     delete_control_event_view, ControlEventView, delete_check_list_view, logout_view, \
     download_check_list_file, object_page_view, download_main_report, get_correction_report, change_correction_report, \
-    add_correction_report_comment, delete_correction_report_comment, download_brach_statistics, download_report_not_submited_view, check_list_form
+    add_correction_report_comment, delete_correction_report_comment, download_brach_statistics, download_report_not_submited_view, check_list_form, \
+    ex_director_report_view
 
 
 object_patterns = [
@@ -53,4 +54,5 @@ urlpatterns = [
     path('report/', download_main_report, name='download_main_report'),
     path('breach_statistics/', download_brach_statistics, name="download_brach_statistics"),
     path('report_checking/report_not_submited/', download_report_not_submited_view, name="download_report_not_submited"),
+    path('ex_direct_report/', ex_director_report_view, name='ex_director_report_view'),
 ]
