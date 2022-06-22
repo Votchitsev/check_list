@@ -58,7 +58,7 @@ class MainReport:
         workbook = xlsxwriter.Workbook(output)
         bold = workbook.add_format({'bold': True})
         worksheet = workbook.add_worksheet()
-        column_headers = ['Дата', 'Объект', 'Оценка', 'Баллы', 'Оценка управляющему',
+        column_headers = ['Дата', 'Объект', 'Муниципалитет', 'Оценка', 'Баллы', 'Оценка управляющему',
                           'Оценка управляющему по производству', 'Наличие просроченной продукции', 
                           'Наличие недоброкачественной продукции']
         row = 0
@@ -83,13 +83,14 @@ class MainReport:
         for i in control_events:
             counter = Counter(i.id)
             worksheet.write(row, 0, str(i.date.strftime("%d.%m.%Y")))
-            worksheet.write(row, 1, str(i.object))
-            worksheet.write(row, 2, counter.common_grade())
-            worksheet.write(row, 3, counter.count_score())
-            worksheet.write(row, 4, counter.manager_count_score())
-            worksheet.write(row, 5, counter.production_count_score())
-            worksheet.write(row, 6, str(counter.is_overdue_food()))
-            worksheet.write(row, 7, str(counter.is_poor_quality()))
+            worksheet.write(row, 1, str(i.object.name))
+            worksheet.write(row, 2, str(i.object.location))
+            worksheet.write(row, 3, counter.common_grade())
+            worksheet.write(row, 4, counter.count_score())
+            worksheet.write(row, 5, counter.manager_count_score())
+            worksheet.write(row, 6, counter.production_count_score())
+            worksheet.write(row, 7, str(counter.is_overdue_food()))
+            worksheet.write(row, 8, str(counter.is_poor_quality()))
             row += 1
 
         workbook.close()
