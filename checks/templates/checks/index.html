@@ -90,6 +90,15 @@
                         </form>
                     </div>
                 </div>
+                <h1 class="main-header">Проверь меня &#129306</h1>
+                <div class="check-me-container">
+                    {% for object in plan %}
+                    <a href="{% url 'object-page' object.id %}" class="check-me-item">
+                        <div class="check-me-item__name">{{ object.name }}</div>
+                        <div class="check-me-item__location">{{ object.location }}</div>
+                    </a>
+                    {% endfor %}
+                </div>
                 {% endblock %}
             </main>
             <aside class="right_column">

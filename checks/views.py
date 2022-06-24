@@ -1,4 +1,5 @@
 
+from pprint import pprint
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView
@@ -7,11 +8,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.http import HttpResponse
 
-from checks.forms import CreateLocationForm, CreateObjectForm, ControlEventForm
+from checks.forms import CreateObjectForm, ControlEventForm
 from checks.models import Object, Location, ControlEvent, Question, Grade, Result, CorrectionReport, CorrectionReportComment, ExecutiveDirector
 from checks.servises.count_score_of_control_event import Counter
 from checks.servises.get_files import CheckListReport, MainReport, BreachStatistics, download_report_not_submited
 from checks.servises.object_page import ObjectInformation
+from checks.servises.plan import make_plan
 
 
 # START PAGE
@@ -23,7 +25,8 @@ def logout_view(request):
 
 def start_view(request):
     context = {
-        'executive_directors': ExecutiveDirector.objects.filter(is_worked=True)
+        'executive_directors': ExecutiveDirector.objects.filter(is_worked=True),
+        'plan': make_plan(),
     }
     return render(request, context=context, template_name='checks/index.html')
 
@@ -165,12 +168,18 @@ def check_list_form(request, control_event_id):
                 grade = Grade.objects.get(name=request.POST.__getitem__(i)),
                 )
             result.save()
+            control_event = ControlEvent.objects.get(id=control_event_id) 
+            control_event.score = Counter(control_event_id).count_score()
+            control_event.save()
         return redirect(reverse('control-event', kwargs={'control_event_id': control_event_id}))
 
 
 @login_required
 def delete_check_list_view(request):
     Result(id=request.GET['control_event_position_id']).delete()
+    control_event = ControlEvent.objects.get(id=request.GET['control_event_id'])
+    control_event.score = Counter(request.GET['control_event_id']).count_score()
+    control_event.save()
     return redirect(reverse('control-event', kwargs={
         'control_event_id': request.GET['control_event_id']
     }))
@@ -268,7 +277,6 @@ def get_correction_report(request, control_event_id):
 
 def change_correction_report(request, control_event_id):
     
-    control_event = ControlEvent.objects.filter(id=control_event_id)[0]
     correction_report = CorrectionReport.objects.filter(control_event=control_event_id)[0]
 
     action = request.GET['change']

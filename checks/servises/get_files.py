@@ -79,7 +79,9 @@ class MainReport:
                 date__range=[self.start_date, 
                 self.finish_date]
                 ).order_by('date')
-
+        # for e in control_events:
+        #     e.score = Counter(e.id).count_score()
+        #     e.save()
         for i in control_events:
             counter = Counter(i.id)
             worksheet.write(row, 0, str(i.date.strftime("%d.%m.%Y")))
