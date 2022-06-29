@@ -23,4 +23,4 @@ def repeat_control():
 
 
 def make_plan():
-    return primary_control() + repeat_control()
+    return set(primary_control() + repeat_control())
