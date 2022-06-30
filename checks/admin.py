@@ -35,3 +35,7 @@ class ControlEventAdmin(admin.ModelAdmin):
 @admin.register(ExecutiveDirector)
 class ExecutiveDirectorAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(Object)
+class ObjectAdmin(admin.ModelAdmin):
+    pass
