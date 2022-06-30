@@ -2,6 +2,7 @@ class Diagram {
     constructor(elementList) {
         this.elementList = elementList;
 				this.initElementStyle();
+        this.setHover();
     }
 
 		initElementStyle() {
@@ -31,6 +32,17 @@ class Diagram {
 				element.style.backgroundColor = "#a7a71d";
 			}
 		}
+
+    setHover() {
+      for(let i = 0; i < this.elementList.length; i++) {
+        this.elementList.item(i).addEventListener('mouseover', (element) => {
+          element.target.classList.add('hover');
+        });
+        this.elementList.item(i).addEventListener('mouseout', (element) => {
+          element.target.classList.remove('hover');
+        });
+      }
+    }
 }
 
 new Diagram(document.querySelectorAll('.diagram__item'));
