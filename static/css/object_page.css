@@ -1,0 +1,79 @@
+.object_header {
+    display: flex;
+    flex-direction: column;
+}
+
+.object_header__location {
+    font-size: 22px;
+}
+
+.object_main_information {
+    display:flex;
+    flex-direction: column;
+}
+
+.object_main_information__item {
+    display: flex;
+}
+
+.object_main_information__item__name {
+    padding: 5px;
+    width: 50%;
+    min-width: 300px;
+}
+
+.object_main_information__item__value {
+    padding: 5px;
+}
+
+.diagram {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 50px;
+    width: fit-content;
+}
+
+.diagram_content {
+    display: flex;
+}
+
+.diagram__left_side {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.diagram__right_side {
+    padding: 10px;
+    display: flex;
+	flex-direction: column;
+	height: fit-content;
+	width:500px;
+    border-left: 1px solid #425342;
+    border-bottom: 1px solid #425342;
+}
+
+.diagram__item {
+    position: relative;
+	margin-top: 15px;
+    height: 40px;
+}
+
+.diagram__item:hover {
+    background-color: black;
+}
+
+.diagram__item__value {
+    position: absolute;
+    right: -25px;
+    top: 8px;
+    font-size: 16px;
+}
+
+.diagram__date {
+    height: 40px;
+    line-height: 40px;
+    margin-top: 15px;
+    font-size: 16px;
+}
