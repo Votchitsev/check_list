@@ -107,7 +107,10 @@ class ControlEventFormView(View):
         if form.is_valid():
             date = form.cleaned_data['date']
             obj = form.cleaned_data['object']
-            control_event = ControlEvent.objects.create(date=date, object=obj, revizor=f"{request.user.first_name} {request.user.last_name}")
+            control_event = ControlEvent.objects.create(
+                date=date, object=obj, 
+                revizor=f"{request.user.first_name} {request.user.last_name}",
+                score=0)
             correction_report = CorrectionReport(control_event=control_event, has_given=False, has_completed=False)
             correction_report.save()
             return redirect(reverse('control-event-list'))
@@ -135,7 +138,7 @@ class ControlEventView(View):
             'control_event_id': control_event_id,
             'object': control_event.object,
             'date': control_event.date,
-            'score': counter.count_score(),
+            'score': control_event.score,
             'manager_responsibility': counter.manager_count_score(),
             'production_responsibility': counter.production_count_score(),
             'status': counter.completeness_check(),
