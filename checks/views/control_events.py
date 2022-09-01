@@ -2,14 +2,14 @@ from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from check_list.checks.forms import ControlEventForm
 from django.views import View
 from django.http import HttpResponse
 
 
-from check_list.checks.models import ControlEvent, CorrectionReport, Grade, Question, Result
-from check_list.checks.servises.count_score_of_control_event import Counter
-from check_list.checks.servises.get_files import CheckListReport
+from checks.models import ControlEvent, CorrectionReport, Grade, Question, Result
+from checks.servises.count_score_of_control_event import Counter
+from checks.servises.get_files import CheckListReport
+from checks.forms import ControlEventForm
 
 
 class ControlEventListView(ListView):

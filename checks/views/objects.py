@@ -1,11 +1,10 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from check_list.checks.forms import CreateObjectForm
 
-from check_list.checks.models import Location, Object
+from checks.models import Location, Object
 from checks.servises.object_page import ObjectInformation
-
+from checks.forms import CreateObjectForm
 
 
 def object_page_view(request, object_id):

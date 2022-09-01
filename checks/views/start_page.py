@@ -5,7 +5,7 @@ from django.http import HttpResponse
 
 from checks.models import ExecutiveDirector
 from checks.servises.plan import make_plan
-from check_list.checks.servises.get_files import BreachStatistics, MainReport, download_report_not_submited
+from checks.servises.get_files import BreachStatistics, MainReport, download_report_not_submited
 
 
 def logout_view(request):
@@ -62,4 +62,3 @@ def ex_director_report_view(request):
     )
     response['Content-Disposition'] = f"attachment;filename=report.xlsx"
     return response
-    

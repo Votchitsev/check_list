@@ -17,11 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.decorators import login_required
 
-from checks.views import start_view, get_objects_view, ObjectFormView, ControlEventListView, ControlEventFormView, \
-    delete_control_event_view, ControlEventView, delete_check_list_view, logout_view, \
-    download_check_list_file, object_page_view, download_main_report, get_correction_report, change_correction_report, \
-    add_correction_report_comment, delete_correction_report_comment, download_brach_statistics, download_report_not_submited_view, check_list_form, \
-    ex_director_report_view
+from checks.views.control_events import ControlEventListView, delete_control_event_view, ControlEventFormView, ControlEventView, check_list_form, delete_check_list_view, download_check_list_file
+from checks.views.correction_report import get_correction_report, change_correction_report, add_correction_report_comment, delete_correction_report_comment
+from checks.views.objects import object_page_view, get_objects_view, ObjectFormView
+from checks.views.start_page import logout_view, start_view, download_main_report, download_brach_statistics, download_report_not_submited_view, ex_director_report_view
 
 
 object_patterns = [
