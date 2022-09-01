@@ -4,3 +4,4 @@ migrations/
 check_list/settings.py
 db.sqlite3
 secret_key.txt
+venv/
