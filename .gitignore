@@ -1,5 +1,6 @@
-db.sqlite3
 todo
 __pycache__/
 migrations/
 check_list/settings.py
+db.sqlite3
+secret_key.txt

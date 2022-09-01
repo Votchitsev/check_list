@@ -3,11 +3,11 @@ const gradeElements = document.querySelectorAll('.check_list__position__grade');
 
 for (let i = 0; i < btns.length; i++) {
 
-    btns.item(i).addEventListener('mouseover', (e) => {
+    btns.item(i).addEventListener('mouseenter', (e) => {
         e.currentTarget.style.border = "3px solid #99a99a"
     });
 
-    btns.item(i).addEventListener('mouseout', (e) => {
+    btns.item(i).addEventListener('mouseleave', (e) => {
         e.target.style.border = 'none'
     });
 
