@@ -21,6 +21,7 @@ class Location(models.Model):
 class Object(models.Model):
     name = models.CharField(max_length=30, null=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='location')
+    isExists = models.BooleanField()
 
     def __str__(self):
         return f"{self.name} {self.location}"
