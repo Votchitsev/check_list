@@ -2,13 +2,13 @@ from checks.models import ControlEvent, Object
 
 
 def has_not_control():
-    return [i for i in Object.objects.all() if len(ControlEvent.objects.filter(object=i)) == 0]
+    return [i for i in Object.objects.filter(isExists=True) if len(ControlEvent.objects.filter(object=i)) == 0]
 
 
 def primary_control():   
     last_control = {}
 
-    for object in Object.objects.all():
+    for object in Object.objects.filter(isExists=True):
         control_events = ControlEvent.objects.filter(object=object).order_by('-date')
         if len(control_events) > 0:
             last_control[object] = control_events[0].date
@@ -19,7 +19,7 @@ def primary_control():
 def repeat_control():
     last_control = {}
 
-    for object in Object.objects.all():
+    for object in Object.objects.filter(isExists=True):
         control_events = ControlEvent.objects.filter(object=object).order_by('-date')
         if len(control_events) > 0:
             if control_events[0].score < 80:

@@ -21,7 +21,7 @@ def object_page_view(request, object_id):
 def get_objects_view(request, object_id=None):
 
     context = {
-        'objects': Object.objects.all(),
+        'objects': Object.objects.filter(isExists = True),
         'locations': Location.objects.all(),
         }
 
