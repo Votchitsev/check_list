@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рейтинг муниципалитетов</title>
+</head>
+<body>
+    <h1>Рейтинг муниципалитетов</h1>
+    <table>
+        <tr>
+            <td>Муниципалитет</td>
+            <td>Количество проверок</td>
+            <td>Средний балл</td>
+        </tr>
+        {% for r in rating %}
+        <tr>
+            <td>{{ r.location }}</td>
+            <td>{{ r.events_count }}</td>
+            <td>{{ r.avg_score }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

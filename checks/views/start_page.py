@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from django.contrib.auth import logout
 from django.urls import reverse
 from django.shortcuts import redirect, render
@@ -5,8 +7,8 @@ from django.http import HttpResponse
 
 from checks.models import ExecutiveDirector
 from checks.servises.plan import make_plan
+from checks.servises.rating import getRating
 from checks.servises.get_files import BreachStatistics, MainReport, download_report_not_submited
-
 
 def logout_view(request):
     logout(request)
@@ -62,3 +64,11 @@ def ex_director_report_view(request):
     )
     response['Content-Disposition'] = f"attachment;filename=report.xlsx"
     return response
+
+
+def rating(request):
+    rating = getRating(request.GET['start_date'], request.GET['finish_date'])
+    context = {
+        'rating': rating
+    }
+    return render(request, context=context, template_name='checks/rating.html')
