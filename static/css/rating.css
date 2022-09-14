@@ -1,0 +1,38 @@
+table {
+    margin: 0 auto;
+    table-layout: fixed;
+    width: 50%;
+    border-collapse: collapse;
+}
+
+thead th:nth-child(1) {
+    width: 10%;
+}
+
+thead th:nth-child(2) {
+    width: 50%;
+}
+
+thead th:nth-child(3) {
+    width: 20%;
+}
+
+thead th:nth-child(4) {
+    width: 20%;
+}
+
+th, td {
+    padding: 10px;
+}
+
+td {
+    text-align: center;
+}
+
+tbody > tr:nth-child(odd) {
+    background-color:#e2f8e2;
+}
+
+.table-title {
+    text-align: center;
+}

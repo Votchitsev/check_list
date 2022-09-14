@@ -1,26 +1,38 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static "/css/style.css" %}" rel="stylesheet">
+    <link href="{% static "/css/rating.css" %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300&display=swap" rel="stylesheet">
     <title>Рейтинг муниципалитетов</title>
 </head>
 <body>
-    <h1>Рейтинг муниципалитетов</h1>
+    <h1 class="table-title">Рейтинг муниципалитетов</h1>
     <table>
-        <tr>
-            <td>Муниципалитет</td>
-            <td>Количество проверок</td>
-            <td>Средний балл</td>
-        </tr>
-        {% for r in rating %}
-        <tr>
-            <td>{{ r.location }}</td>
-            <td>{{ r.events_count }}</td>
-            <td>{{ r.avg_score }}</td>
-        </tr>
+        <thead>
+            <tr>
+                <th>Место</th>
+                <th>Муниципалитет</th>
+                <th>Количество проверок</th>
+                <th>Средний балл</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in rating %}
+            <tr>
+                <td>{{ r.place }}</td>
+                <td>{{ r.location }}</td>
+                <td>{{ r.events_count }}</td>
+                <td>{{ r.avg_score }}</td>
+            </tr>
         {% endfor %}
+        </tbody>
     </table>
 </body>
 </html>
