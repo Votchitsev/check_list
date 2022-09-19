@@ -3,6 +3,8 @@ table {
     table-layout: fixed;
     width: 50%;
     border-collapse: collapse;
+
+    min-width: 1030px;
 }
 
 thead th:nth-child(1) {
@@ -35,4 +37,19 @@ tbody > tr:nth-child(odd) {
 
 .table-title {
     text-align: center;
+    min-width: 1030px;
+}
+
+.fa-download {
+    position: absolute;
+    top: 4%;
+    right: 20%;
+    font-size: 30px;
+}
+
+.fa-download:hover {
+    font-size: 33px;
+    cursor: pointer;
+
+    transition: all 100ms;
 }
