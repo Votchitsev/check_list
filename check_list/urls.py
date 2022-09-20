@@ -21,7 +21,7 @@ from checks.views.control_events import ControlEventListView, delete_control_eve
 from checks.views.correction_report import get_correction_report, change_correction_report, add_correction_report_comment, delete_correction_report_comment
 from checks.views.objects import object_page_view, get_objects_view, ObjectFormView
 from checks.views.start_page import logout_view, start_view, download_main_report, download_brach_statistics, download_report_not_submited_view, ex_director_report_view, rating
-
+from checks.views.rating import download_rating_view
 
 object_patterns = [
     path('list/', get_objects_view, name='object-list'),
@@ -54,5 +54,6 @@ urlpatterns = [
     path('breach_statistics/', download_brach_statistics, name="download_brach_statistics"),
     path('report_checking/report_not_submited/', download_report_not_submited_view, name="download_report_not_submited"),
     path('ex_direct_report/', ex_director_report_view, name='ex_director_report_view'),
-    path('rating/', rating, name='rating')
+    path('rating/', rating, name='rating'),
+    path('rating/download/', download_rating_view, name='download_rating')
 ]

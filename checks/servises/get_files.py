@@ -1,5 +1,6 @@
 import io
 import xlsxwriter
+from checks.servises.rating import getRating
 
 from checks.models import Question, Result, ControlEvent, CorrectionReport, CorrectionReportComment
 from checks.servises.count_score_of_control_event import Counter
@@ -192,3 +193,40 @@ def download_report_not_submited():
     output.seek(0)
 
     return output
+
+
+def xlsx_file(function):
+
+    def decorate_function(start_date=None, finish_date=None):
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output)
+        worksheet = workbook.add_worksheet()
+
+        function(workbook, worksheet, start_date, finish_date)
+
+        workbook.close()
+        output.seek(0)
+
+        return output
+    return decorate_function
+
+
+@xlsx_file
+def download_rating(workbook, worksheet, start_date, finish_date):
+
+    column_headers = ['Место', 'Муниципалитет', 'Количество проверок', 'Средний балл']
+
+    row = 0
+
+    for index, value in enumerate(column_headers):
+        worksheet.write(row, index, value)
+    
+    row += 1
+
+    for item in getRating(start_date, finish_date):
+        worksheet.write(row, 0, item['place'])
+        worksheet.write(row, 1, item['location'].name)
+        worksheet.write(row, 2, item['events_count'])
+        worksheet.write(row, 3, item['avg_score'])
+
+        row += 1

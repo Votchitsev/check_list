@@ -2,7 +2,6 @@ from checks.models import Object, Location, ControlEvent
 
 
 def getRating(start_date, finish_date):
-
     result = []
     place = 0
 

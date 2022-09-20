@@ -67,8 +67,15 @@ def ex_director_report_view(request):
 
 
 def rating(request):
-    rating = getRating(request.GET['start_date'], request.GET['finish_date'])
+    start_date = request.GET['start_date']
+    finish_date = request.GET['finish_date']
+
+    rating = getRating(start_date, finish_date)
+
     context = {
-        'rating': rating
+        'rating': rating,
+        'start_date': start_date,
+        'finish_date': finish_date,
     }
+    
     return render(request, context=context, template_name='checks/rating.html')
