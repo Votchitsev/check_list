@@ -4,6 +4,7 @@ from checks.servises.rating import getRating
 
 from checks.models import Question, Result, ControlEvent, CorrectionReport, CorrectionReportComment
 from checks.servises.count_score_of_control_event import Counter
+from checks.servises.decorators import xlsx_file
 
 
 class CheckListReport:
@@ -193,22 +194,6 @@ def download_report_not_submited():
     output.seek(0)
 
     return output
-
-
-def xlsx_file(function):
-
-    def decorate_function(start_date=None, finish_date=None):
-        output = io.BytesIO()
-        workbook = xlsxwriter.Workbook(output)
-        worksheet = workbook.add_worksheet()
-
-        function(workbook, worksheet, start_date, finish_date)
-
-        workbook.close()
-        output.seek(0)
-
-        return output
-    return decorate_function
 
 
 @xlsx_file

@@ -75,8 +75,12 @@ def rating(request):
 
     context = {
         'rating': rating,
-        'start_date': datetime.strptime(start_date, "%Y-%m-%d").date(),
-        'finish_date': datetime.strptime(finish_date, "%Y-%m-%d").date(),
+        'start_date': datetime.strptime(start_date, "%Y-%m-%d"),
+        'finish_date': datetime.strptime(finish_date, "%Y-%m-%d"),
+        'for_download': {
+            'start_date': start_date,
+            'finish_date': finish_date,
+        }
     }
     
     return render(request, context=context, template_name='checks/rating.html')
