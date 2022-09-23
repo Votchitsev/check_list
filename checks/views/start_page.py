@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from pprint import pprint
 
 from django.contrib.auth import logout
@@ -74,8 +75,8 @@ def rating(request):
 
     context = {
         'rating': rating,
-        'start_date': start_date,
-        'finish_date': finish_date,
+        'start_date': datetime.strptime(start_date, "%Y-%m-%d").date(),
+        'finish_date': datetime.strptime(finish_date, "%Y-%m-%d").date(),
     }
     
     return render(request, context=context, template_name='checks/rating.html')
