@@ -1,7 +1,3 @@
-todo
-__pycache__/
-migrations/
-check_list/settings.py
-db.sqlite3
+__pycache__
 secret_key.txt
 venv/

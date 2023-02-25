@@ -1,5 +1,4 @@
-asgiref==3.4.1
+asgiref
 Django==4.1
 sqlparse==0.4.2
-
 XlsxWriter~=3.0.3

@@ -30,6 +30,10 @@
             <div class="right_column__common-information__description">Результат управляющего по производству (баллы)</div>
             <div class="right_column__common-information__result"><span class="score">{{production_responsibility}}</span></div>
         </div>
+        <div class="right_column__common-information">
+            <div class="right_column__common-information__description">Результат Менеджера ТРС (баллы)</div>
+            <div class="right_column__common-information__result"><span class="score">{{retail_manager_responsibility}}</span></div>
+        </div>
         <a class="right-column__btn" href="{% url 'download_check_list' control_event_id %}">
             <span class="right-column__btn-name">Загрузить чек-лист</span>
         </a>

@@ -65,7 +65,7 @@ class ControlEventFormView(View):
 
 class ControlEventView(View):
     '''
-    Класс отвечает за отображение страницы с результатами конуретной проверки)
+    Класс отвечает за отображение страницы с результатами конкретной проверки)
     '''
     template_name = 'checks/control_event_result.html'
 
@@ -79,7 +79,7 @@ class ControlEventView(View):
             revizor = 'Не известно'
         
         context = {
-            'result': Result.objects.filter(control_event=control_event_id),
+            'result': Result.objects.filter(control_event=control_event_id).order_by('question__text'),
             'questions': Question.objects.all(),
             'control_event_id': control_event_id,
             'object': control_event.object,
@@ -87,9 +87,11 @@ class ControlEventView(View):
             'score': control_event.score,
             'manager_responsibility': counter.manager_count_score(),
             'production_responsibility': counter.production_count_score(),
+            'retail_manager_responsibility': counter.retail_manager_score(),
             'status': counter.completeness_check(),
             'revizor': revizor,
         }
+        
         return render(request=request, context=context, template_name=self.template_name)
 
 

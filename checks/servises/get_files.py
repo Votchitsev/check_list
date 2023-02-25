@@ -11,7 +11,7 @@ class CheckListReport:
 
     def __init__(self, control_event):
         self.control_event = control_event
-        self.queryset = Result.objects.filter(control_event=self.control_event)
+        self.queryset = Result.objects.filter(control_event=self.control_event).order_by('question__text')
 
     def download_check_list_file(self):
         output = io.BytesIO()
@@ -21,7 +21,7 @@ class CheckListReport:
 
         row = 0
 
-        worksheet.write(row, 0, f"Объект: {self.queryset[0].control_event.object}"
+        worksheet.write(row, 0, f"Объект: {self.queryset[0].control_event.object} "
                                 f"Дата проверки: {self.queryset[0].control_event.date}",
                         bold)
         row += 1
@@ -38,6 +38,10 @@ class CheckListReport:
         worksheet.write(row, 0,
                         f"Оценка управляющему по производству: "
                         f"{Counter(self.control_event).production_count_score()} балла(-ов)")
+        row += 1
+        worksheet.write(row, 0,
+                        f"Оценка менеджеру по ТРС: "
+                        f"{Counter(self.control_event).retail_manager_score()} балла(-ов)")
 
         workbook.close()
         output.seek(0)
@@ -61,7 +65,7 @@ class MainReport:
         bold = workbook.add_format({'bold': True})
         worksheet = workbook.add_worksheet()
         column_headers = ['Дата', 'Объект', 'Муниципалитет', 'Оценка', 'Баллы', 'Оценка управляющему',
-                          'Оценка управляющему по производству', 'Наличие просроченной продукции', 
+                          'Оценка управляющему по производству', 'Оценка менеджеру по ТРС', 'Наличие просроченной продукции', 
                           'Наличие недоброкачественной продукции']
         row = 0
 
@@ -91,8 +95,9 @@ class MainReport:
             worksheet.write(row, 4, counter.count_score())
             worksheet.write(row, 5, counter.manager_count_score())
             worksheet.write(row, 6, counter.production_count_score())
-            worksheet.write(row, 7, str(counter.is_overdue_food()))
-            worksheet.write(row, 8, str(counter.is_poor_quality()))
+            worksheet.write(row, 7, counter.retail_manager_score())
+            worksheet.write(row, 8, str(counter.is_overdue_food()))
+            worksheet.write(row, 9, str(counter.is_poor_quality()))
             row += 1
 
         workbook.close()
