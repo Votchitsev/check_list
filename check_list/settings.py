@@ -26,7 +26,7 @@ with open('check_list/secret_key.txt') as secret_key:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.7.11']
 
 
 # Application definition
