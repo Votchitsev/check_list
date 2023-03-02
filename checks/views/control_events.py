@@ -102,7 +102,7 @@ def check_list_form(request, control_event_id):
     результатов проверки
     '''
     if request.method == 'GET':
-        questions_not_exists = Question.objects.exclude(question__control_event_id=control_event_id)
+        questions_not_exists = Question.objects.exclude(question__control_event_id=control_event_id).order_by('text')
         
         context = {
             'questions': questions_not_exists,
