@@ -8,9 +8,9 @@ class Counter:
 
         self.result_object = Result.objects.filter(control_event_id=control_event_id)
         self.questions = Question.objects.all()
-        self.manager_questions = [3, 6, 7, 8, 10, 21, 22, 23, 24, 25, 27, 59, 62, 70]
+        self.manager_questions = [3, 6, 7, 8, 10, 21, 22, 23, 24, 25, 27, 37, 38, 59, 60, 62, 70]
         self.retail_manager_questions = [66, 67, 68, 69, 71]
-        self.manager_and_production_questions = [4, 5, 11, 12, 13, 14, 15, 16, 17, 18, 19, 30, 35, 46, 47, 50, 56, 60, 63, 64]
+        self.manager_and_production_questions = [4, 5, 11, 12, 13, 14, 15, 16, 17, 18, 19, 30, 35, 46, 47, 50, 56, 61, 63, 64]
 
     def count_score(self):
 
@@ -36,12 +36,15 @@ class Counter:
                                                 self.manager_and_production_questions]
 
         score = 0
+
         score_of_not_checked_questions = 0
 
         score_of_all_questions = sum([x.significance_score for x in self.questions if x.id in
                                       self.manager_questions])
         score_of_all_questions += sum([x.significance_score for x in self.questions if x.id in
                                        self.manager_and_production_questions]) / 2
+        
+        score_of_all_questions -= 1
 
         for i in manager_result_object + manager_and_production_result_object:
             if i.grade.name == "Да":
@@ -76,11 +79,15 @@ class Counter:
         score = 0
         score_of_not_checked_questions = 0
 
-        score_of_all_questions = sum([x.significance_score for x in self.questions if x.id not in
-                                      self.manager_questions and x.id not in self.manager_and_production_questions])
+        score_of_all_questions = sum(
+            [x.significance_score for x in self.questions 
+                if x.id not in self.manager_questions
+                and x.id not in self.manager_and_production_questions
+                and x.id not in self.retail_manager_questions]
+                )
         score_of_all_questions += sum([x.significance_score for x in self.questions if x.id in
                                        self.manager_and_production_questions]) / 2
-        score_of_all_questions -= 2
+        score_of_all_questions -= 1
 
         for i in production_result_object + manager_and_production_result_object:
             if i.grade.name == "Да":
