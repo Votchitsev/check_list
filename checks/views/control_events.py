@@ -7,7 +7,7 @@ from django.http import HttpResponse
 
 
 from checks.models import ControlEvent, CorrectionReport, Grade, Question, Result
-from checks.servises.count_score_of_control_event import Counter
+from checks.servises.count_score_of_control_event import Counter, NewCounter
 from checks.servises.get_files import CheckListReport
 from checks.forms import ControlEventForm
 
@@ -65,13 +65,16 @@ class ControlEventFormView(View):
 
 class ControlEventView(View):
     '''
-    Класс отвечает за отображение страницы с результатами конкретной проверки)
+    Класс отвечает за отображение страницы с результатами конкретной проверки
     '''
     template_name = 'checks/control_event_result.html'
 
     def get(self, request, control_event_id):
         control_event = ControlEvent.objects.filter(id=control_event_id)[0]
         counter = Counter(control_event_id)
+
+        new_counter = NewCounter(control_event_id)
+        new_counter.employee_count_score()
 
         if control_event.revizor != None:
             revizor = control_event.revizor

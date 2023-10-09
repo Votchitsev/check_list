@@ -70,3 +70,16 @@ class CorrectionReport(models.Model):
 class CorrectionReportComment(models.Model):
     correction_report = models.ForeignKey(CorrectionReport, on_delete=models.CASCADE)
     comment = models.TextField(null=False)
+
+
+class EmployeePosition(models.Model):
+    position = models.CharField(max_length=50)
+
+
+    def __str__(self):
+        return f"{self.position}"
+
+
+class EmployeePositionQuestion(models.Model):
+    employee_position = models.ForeignKey(EmployeePosition, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
