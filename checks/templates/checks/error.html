@@ -1,0 +1,14 @@
+{% extends "checks/index.html" %}
+{% load static %}
+{% block main %}
+<body>
+  <div class="error_container">
+    <h1 class="error_title">{{ title }}</h1>
+    <p class="error_description">{{ description }}</p>
+    <a href="{% url 'control-event' control_event_id %}">
+      <button class="form_submit_btn">{{ button_text }}</button>
+    </a>
+  </div>
+</body>
+</html>
+{% endblock %}

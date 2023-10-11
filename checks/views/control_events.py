@@ -10,6 +10,7 @@ from checks.models import ControlEvent, CorrectionReport, Grade, Question, Resul
 from checks.servises.count_score_of_control_event import Counter, NewCounter
 from checks.servises.get_files import CheckListReport
 from checks.forms import ControlEventForm
+from checks.servises.get_relational_questions import validate_form
 
 
 class ControlEventListView(ListView):
@@ -76,6 +77,8 @@ class ControlEventView(View):
         new_counter = NewCounter(control_event_id)
         new_counter.employee_count_score()
 
+        new_counter.count_score()
+
         if control_event.revizor != None:
             revizor = control_event.revizor
         else:
@@ -113,6 +116,13 @@ def check_list_form(request, control_event_id):
         return render(request, context=context, template_name='checks/check_list.html')
 
     if request.method == 'POST':
+        if not validate_form(request.POST.dict().keys()):
+            return render(request, template_name='checks/error.html', context={
+                'title': 'Ошибка в заполнении чек-листа',
+                'description': 'Вы выбрали взаимоисключающие вопросы вместе. Пожалуйста, исправьте чек-лист.',
+                'button_text': 'Назад к проверке',
+                'control_event_id': control_event_id,
+            })
 
         for i in request.POST.dict():
             if i == 'csrfmiddlewaretoken':

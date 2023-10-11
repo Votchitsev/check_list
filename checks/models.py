@@ -30,6 +30,7 @@ class Object(models.Model):
 class Question(models.Model):
     text = models.TextField(null=False)
     significance_score = models.IntegerField(null=False)
+    parent_question = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='child_question')
 
     def __str__(self):
         return self.text

@@ -174,7 +174,7 @@ class NewCounter:
     def count_score(self):
         score = 0
         score_of_not_checked_questions = 0
-        score_of_all_questions = sum([x.significance_score for x in self.questions]) - 2
+        score_of_all_questions = sum([x.significance_score for x in self.questions if not x.parent_question])
 
         for i in self.result_object:
             if i.grade.name == 'Да':
@@ -208,11 +208,14 @@ class NewCounter:
                     if r.grade.name == 'Да':
                         score += r.question.significance_score
 
-            if employee.position in result:
-                result[employee.position] += int(math.ceil((score / (all_questions_score - non_checked_score)) * 100))
+            try:
+                if employee.position in result:
+                    result[employee.position] += int(math.ceil((score / (all_questions_score - non_checked_score)) * 100))
 
-            else:
-                result[employee.position] = int(math.ceil((score / (all_questions_score - non_checked_score)) * 100))
+                else:
+                    result[employee.position] = int(math.ceil((score / (all_questions_score - non_checked_score)) * 100))
+            except ZeroDivisionError:
+                result[employee.position] = 0
 
         return result
 
