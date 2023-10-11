@@ -88,10 +88,8 @@ class ControlEventView(View):
             'object': control_event.object,
             'date': control_event.date,
             'score': control_event.score,
-            'manager_responsibility': counter.manager_count_score(),
-            'production_responsibility': counter.production_count_score(),
-            'retail_manager_responsibility': counter.retail_manager_score(),
-            'status': counter.completeness_check(),
+            'employee_count_score': new_counter.employee_count_score(),
+            'status': new_counter.completeness_check(),
             'revizor': revizor,
         }
         
