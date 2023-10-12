@@ -2,8 +2,8 @@ import io
 import xlsxwriter
 from checks.servises.rating import getRating
 
-from checks.models import Question, Result, ControlEvent, CorrectionReport, CorrectionReportComment
-from checks.servises.count_score_of_control_event import Counter
+from checks.models import EmployeePosition, Question, Result, ControlEvent, CorrectionReport, CorrectionReportComment
+from checks.servises.count_score_of_control_event import Counter, NewCounter
 from checks.servises.decorators import xlsx_file
 
 
@@ -32,16 +32,17 @@ class CheckListReport:
             row += 1
 
         worksheet.write(row, 0, f"Итоговая оценка: {Counter(self.control_event).count_score()} балла(-ов)")
+
         row += 1
-        worksheet.write(row, 0, f"Оценка управляющему: {Counter(self.control_event).manager_count_score()} балла(-ов)")
-        row += 1
-        worksheet.write(row, 0,
-                        f"Оценка управляющему по производству: "
-                        f"{Counter(self.control_event).production_count_score()} балла(-ов)")
-        row += 1
-        worksheet.write(row, 0,
-                        f"Оценка менеджеру по ТРС: "
-                        f"{Counter(self.control_event).retail_manager_score()} балла(-ов)")
+
+        employee_results = NewCounter(self.control_event).employee_count_score()
+
+        for key, value in employee_results.items():
+            worksheet.write(
+                row, 0, f"Оценка {key}: {value} балла(-ов)"
+            )
+
+            row += 1
 
         workbook.close()
         output.seek(0)
@@ -64,9 +65,9 @@ class MainReport:
         workbook = xlsxwriter.Workbook(output)
         bold = workbook.add_format({'bold': True})
         worksheet = workbook.add_worksheet()
-        column_headers = ['Дата', 'Объект', 'Муниципалитет', 'Оценка', 'Баллы', 'Оценка управляющему',
-                          'Оценка управляющему по производству', 'Оценка менеджеру по ТРС', 'Наличие просроченной продукции', 
-                          'Наличие недоброкачественной продукции']
+        employee_positions = EmployeePosition.objects.all()
+
+        column_headers = ['Дата', 'Объект', 'Муниципалитет', 'Оценка', 'Баллы'] + [position.position for position in employee_positions] +  ['Наличие просроченной продукции', 'Наличие недоброкачественной продукции']
         row = 0
 
         for index, header in enumerate(column_headers):
@@ -87,17 +88,32 @@ class MainReport:
                 ).order_by('date')
         
         for i in control_events:
-            counter = Counter(i.id)
-            worksheet.write(row, 0, str(i.date.strftime("%d.%m.%Y")))
-            worksheet.write(row, 1, str(i.object.name))
-            worksheet.write(row, 2, str(i.object.location))
-            worksheet.write(row, 3, counter.common_grade())
-            worksheet.write(row, 4, counter.count_score())
-            worksheet.write(row, 5, counter.manager_count_score())
-            worksheet.write(row, 6, counter.production_count_score())
-            worksheet.write(row, 7, counter.retail_manager_score())
-            worksheet.write(row, 8, str(counter.is_overdue_food()))
-            worksheet.write(row, 9, str(counter.is_poor_quality()))
+            counter = NewCounter(i.id)
+            employee_results = counter.employee_count_score()
+            
+            column = 0
+
+            worksheet.write(row, column, str(i.date.strftime("%d.%m.%Y")))
+            column += 1
+
+            worksheet.write(row, column, str(i.object.name))
+            column += 1
+
+            worksheet.write(row, column, str(i.object.location))
+            column += 1
+
+            worksheet.write(row, column, counter.common_grade())
+            column += 1
+
+            worksheet.write(row, column, counter.count_score())
+            column += 1
+
+            for employee_result in employee_results.values():
+                worksheet.write(row, column, employee_result)
+                column += 1
+
+            worksheet.write(row, column, str(counter.is_overdue_food()))
+            worksheet.write(row, column, str(counter.is_poor_quality()))
             row += 1
 
         workbook.close()
