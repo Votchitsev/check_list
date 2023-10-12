@@ -1,5 +1,8 @@
-from checks.models import Result, Question, EmployeePosition, EmployeePositionQuestion
 import math
+from django.db.models import F
+from checks.models import Result, Question, EmployeePosition, EmployeePositionQuestion
+from checks.servises.get_relational_questions import validate_form
+
 
 
 class Counter:
@@ -170,6 +173,7 @@ class NewCounter:
         self.control_event_id = control_event_id
         self.result_object = Result.objects.filter(control_event_id=control_event_id).select_related('question')
         self.questions = Question.objects.all()
+        self.control_count_questions = len([i for i in self.questions if not i.parent_question])
 
     def count_score(self):
         score = 0
@@ -183,6 +187,7 @@ class NewCounter:
                 score_of_not_checked_questions += i.question.significance_score
 
         try:
+            print(score, score_of_all_questions, score_of_not_checked_questions)
             return int(math.ceil((score / (score_of_all_questions - score_of_not_checked_questions)) * 100))
         except ZeroDivisionError:
             return 0
@@ -194,14 +199,19 @@ class NewCounter:
         result = dict()
 
         for employee in employees:
-            all_questions_score = 0
             non_checked_score = 0
             score = 0
 
-            for r in self.result_object:
-                if r.question.id in employee_questions.filter(employee_position=employee).values_list('question_id', flat=True):
-                    all_questions_score += r.question.significance_score
+            all_employee_questions = employee_questions.filter(employee_position=employee).annotate(
+                    parent_question=F('question__parent_question')
+                )
 
+            all_employee_questions_ids = [x.question.id for x in all_employee_questions]
+
+            all_questions_score = sum([x.question.significance_score for x in all_employee_questions if not x.parent_question])
+
+            for r in self.result_object:
+                if r.question.id in all_employee_questions_ids:
                     if r.grade.name == 'Н/о':
                         non_checked_score += r.question.significance_score
 
@@ -220,7 +230,10 @@ class NewCounter:
         return result
 
     def completeness_check(self):
-        if len(self.result_object) == len(self.questions) - 2:
+        questions = [x.question.id for x in self.result_object]
+        is_valid = validate_form(questions)
+
+        if is_valid and len(questions) == self.control_count_questions:
             return '✓'
         else:
             return '✗'
