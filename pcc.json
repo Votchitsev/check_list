@@ -1,0 +1,10 @@
+{
+  "apps": {
+    "name": "Public Catering version 1.1",
+    "cwd": ".",
+    "script": "run.py",
+    "exec_mode": "fork",
+    "exec_interpreter": "python3",
+    "version": "1.1 (10.23)"
+  }
+}
