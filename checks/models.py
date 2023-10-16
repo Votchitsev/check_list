@@ -28,6 +28,7 @@ class Object(models.Model):
 
 
 class Question(models.Model):
+    sort_id = models.IntegerField(null=True)
     text = models.TextField(null=False)
     significance_score = models.IntegerField(null=False)
     parent_question = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='child_question', blank=True)

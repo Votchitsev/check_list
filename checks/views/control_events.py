@@ -103,7 +103,7 @@ def check_list_form(request, control_event_id):
     результатов проверки
     '''
     if request.method == 'GET':
-        questions_not_exists = Question.objects.exclude(question__control_event_id=control_event_id).order_by('text')
+        questions_not_exists = Question.objects.exclude(question__control_event_id=control_event_id).order_by('sort_id')
         
         context = {
             'questions': questions_not_exists,
@@ -113,13 +113,13 @@ def check_list_form(request, control_event_id):
         return render(request, context=context, template_name='checks/check_list.html')
 
     if request.method == 'POST':
-        if not validate_form(request.POST.dict().keys()):
-            return render(request, template_name='checks/error.html', context={
-                'title': 'Ошибка в заполнении чек-листа',
-                'description': 'Вы выбрали взаимоисключающие вопросы вместе. Пожалуйста, исправьте чек-лист.',
-                'button_text': 'Назад к проверке',
-                'control_event_id': control_event_id,
-            })
+        # if not validate_form(request.POST.dict().keys()):
+        #     return render(request, template_name='checks/error.html', context={
+        #         'title': 'Ошибка в заполнении чек-листа',
+        #         'description': 'Вы выбрали взаимоисключающие вопросы вместе. Пожалуйста, исправьте чек-лист.',
+        #         'button_text': 'Назад к проверке',
+        #         'control_event_id': control_event_id,
+        #     })
 
         for i in request.POST.dict():
             if i == 'csrfmiddlewaretoken':
