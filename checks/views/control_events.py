@@ -128,12 +128,14 @@ def check_list_form(request, control_event_id):
                 control_event = ControlEvent.objects.get(id=control_event_id),
                 question = Question.objects.get(id=i),
                 grade = Grade.objects.get(name=request.POST.__getitem__(i)),
-                )
+            )
 
             result.save()
-            control_event = ControlEvent.objects.get(id=control_event_id) 
-            control_event.score = NewCounter(control_event_id).count_score()
-            control_event.save()
+
+        control_event = ControlEvent.objects.get(id=control_event_id) 
+        control_event.score = NewCounter(control_event_id).count_score()
+        control_event.save()
+
         return redirect(reverse('control-event', kwargs={'control_event_id': control_event_id}))
 
 
