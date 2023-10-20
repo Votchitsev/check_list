@@ -11,7 +11,7 @@ class CheckListReport:
 
     def __init__(self, control_event):
         self.control_event = control_event
-        self.queryset = Result.objects.filter(control_event=self.control_event).order_by('question__text')
+        self.queryset = Result.objects.filter(control_event=self.control_event).order_by('question__sort_id')
 
     def download_check_list_file(self):
         output = io.BytesIO()

@@ -72,7 +72,6 @@ class ControlEventView(View):
 
     def get(self, request, control_event_id):
         control_event = ControlEvent.objects.filter(id=control_event_id)[0]
-        counter = Counter(control_event_id)
 
         new_counter = NewCounter(control_event_id)
 
@@ -82,7 +81,7 @@ class ControlEventView(View):
             revizor = 'Не известно'
         
         context = {
-            'result': Result.objects.filter(control_event=control_event_id).order_by('question__text'),
+            'result': Result.objects.filter(control_event=control_event_id).order_by('question__sort_id'),
             'questions': Question.objects.all(),
             'control_event_id': control_event_id,
             'object': control_event.object,
@@ -158,8 +157,11 @@ def download_check_list_file(request, control_event_id):
     которая осуществляет выгрузку файла чек-листа в формат excel
     '''
     report = CheckListReport(control_event_id)
-    response = HttpResponse(report.download_check_list_file(),
-                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+    response = HttpResponse(
+        report.download_check_list_file(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    )
+
     response['Content-Disposition'] = f"attachment;filename={report.create_filename()}"
     return response
-    
