@@ -113,6 +113,8 @@ class MainReport:
                 column += 1
 
             worksheet.write(row, column, str(counter.is_overdue_food()))
+            column += 1
+
             worksheet.write(row, column, str(counter.is_poor_quality()))
             row += 1
 
