@@ -4,7 +4,6 @@ from checks.models import Result, Question, EmployeePosition, EmployeePositionQu
 from checks.servises.get_relational_questions import validate_form
 
 
-
 class Counter:
 
     def __init__(self, control_event_id):
@@ -28,15 +27,23 @@ class Counter:
                 score_of_not_checked_questions += i.question.significance_score
 
         try:
-            return int(math.ceil((score / (score_of_all_questions - score_of_not_checked_questions)) * 100))
+            return int(
+                math.ceil(
+                    (score / (score_of_all_questions - score_of_not_checked_questions)) * 100
+                )
+            )
         except ZeroDivisionError:
             return 0
 
     def manager_count_score(self):
 
-        manager_result_object = [i for i in self.result_object if i.question.id in self.manager_questions]
-        manager_and_production_result_object = [i for i in self.result_object if i.question.id in
-                                                self.manager_and_production_questions]
+        manager_result_object = [
+            i for i in self.result_object if i.question.id in self.manager_questions
+        ]
+
+        manager_and_production_result_object = [
+            i for i in self.result_object if i.question.id in self.manager_and_production_questions
+        ]
 
         score = 0
 
@@ -46,7 +53,7 @@ class Counter:
                                       self.manager_questions])
         score_of_all_questions += sum([x.significance_score for x in self.questions if x.id in
                                        self.manager_and_production_questions]) / 2
-        
+
         score_of_all_questions -= 1
 
         for i in manager_result_object + manager_and_production_result_object:
@@ -62,12 +69,14 @@ class Counter:
                     score_of_not_checked_questions += i.question.significance_score
 
         try:
-            return int(math.ceil((score / (score_of_all_questions - score_of_not_checked_questions)) * 100))
+            return int(
+                math.ceil(
+                    (score / (score_of_all_questions - score_of_not_checked_questions)) * 100)
+                )
         except ZeroDivisionError:
             return 0
 
     def production_count_score(self):
-
         production_result_object = [
             i for i in self.result_object 
             if i.question.id not in self.manager_questions 
@@ -105,28 +114,39 @@ class Counter:
                     score_of_not_checked_questions += i.question.significance_score
 
         try:
-            return int(math.ceil((score / (score_of_all_questions - score_of_not_checked_questions)) * 100))
+            return int(
+                math.ceil(
+                    (score / (score_of_all_questions - score_of_not_checked_questions)) * 100)
+                )
         except ZeroDivisionError:
             return 0
-        
+
     def retail_manager_score(self):
-        retail_manager_result_object = [i for i in self.result_object if i.question.id in self.retail_manager_questions]
+        """Retail manager score"""
+
+        retail_manager_result_object = [
+            i for i in self.result_object if i.question.id in self.retail_manager_questions
+        ]
 
         score = 0
         score_of_not_checked_questions = 0
         score_of_all_questions = sum(
-            [x.significance_score for x in self.questions if x.id in self.retail_manager_questions]
-                )
-        
+            x.significance_score for x in self.questions if x.id in self.retail_manager_questions
+        )
+
         for i in retail_manager_result_object:
             if i.grade.name == "Да":
                 score += i.question.significance_score
-                
+
             elif i.grade.name == "Н/о":
                 score_of_not_checked_questions += i.question.significance_score
 
         try:
-            return int(math.ceil((score / (score_of_all_questions - score_of_not_checked_questions)) * 100))
+            return int(
+                math.ceil(
+                    (score / (score_of_all_questions - score_of_not_checked_questions)) * 100)
+                )
+
         except ZeroDivisionError:
             return 0
 
@@ -139,7 +159,7 @@ class Counter:
             return '✗'
 
     def common_grade(self):
-        
+
         if self.count_score() <= 80 or self.is_overdue_food() == 'Да':
             return 'Неудовлетворительно'
         elif 80 < self.count_score() < 95:
@@ -249,10 +269,13 @@ class NewCounter:
 
     def is_overdue_food(self):
         try:
-            if str(self.result_object.filter(question_id=33)[0].grade) == 'Нет':
-                return 'Да'
-            else:
-                return 'Нет'
+            overdue_food_questions = self.result_object.filter(question_id__in=[33, 71])
+
+            for question in overdue_food_questions:
+                if str(question.grade) == 'Нет':
+                    return 'Да'
+
+            return 'Нет'
         except IndexError:
             return '-'
 
