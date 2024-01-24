@@ -249,10 +249,15 @@ class NewCounter:
 
     def is_overdue_food(self):
         try:
-            if str(self.result_object.filter(question_id=33)[0].grade) == 'Нет':
-                return 'Да'
-            else:
-                return 'Нет'
+            overdue_food_questions = self.result_object.filter(question_id__in=[33, 71])
+
+            for question in overdue_food_questions:
+
+                if str(question.grade) == 'Нет':
+                    return 'Да'
+
+            return 'Нет'
+
         except IndexError:
             return '-'
 
