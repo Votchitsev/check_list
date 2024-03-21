@@ -217,14 +217,20 @@ class NewCounter:
                     if r.grade.name == 'Да':
                         score += r.question.significance_score
 
+            result[employee.position] = {}
+            result[employee.position]['score'] = 0
+            result[employee.position]['all_questions_score'] = all_questions_score
+            result[employee.position]['non_checked_score'] = non_checked_score
+            result[employee.position]['raw_score'] = score
+
             try:
                 if employee.position in result:
-                    result[employee.position] += int(math.ceil((score / (all_questions_score - non_checked_score)) * 100))
+                    result[employee.position]['score'] += int(math.ceil((score / (all_questions_score - non_checked_score)) * 100))
 
                 else:
-                    result[employee.position] = int(math.ceil((score / (all_questions_score - non_checked_score)) * 100))
+                    result[employee.position]['score'] = int(math.ceil((score / (all_questions_score - non_checked_score)) * 100))
             except ZeroDivisionError:
-                result[employee.position] = 0
+                result[employee.position]['score'] = 0
 
         return result
 
@@ -269,3 +275,30 @@ class NewCounter:
                 return 'Нет'
         except IndexError:
             return '-'
+
+    def getCalculation(self):
+        score = 0
+        score_of_not_checked_questions = 0
+        score_of_all_questions = sum([x.significance_score for x in self.questions if not x.parent_question])
+
+        for i in self.result_object:
+            if i.grade.name == 'Да':
+                score += i.question.significance_score
+            elif i.grade.name == 'Н/о':
+                score_of_not_checked_questions += i.question.significance_score
+
+        try:
+            return {
+                'score': int(math.ceil((score / (score_of_all_questions - score_of_not_checked_questions)) * 100)),
+                'all_questions_score': score_of_all_questions,
+                'non_checked_score':  score_of_not_checked_questions,
+                'raw_score': score
+            }
+        except ZeroDivisionError:
+            return {
+                'score': 0,
+                'all_questions_score': score_of_all_questions,
+                'non_checked_score':  score_of_not_checked_questions,
+                'raw_score': score
+            }
+        

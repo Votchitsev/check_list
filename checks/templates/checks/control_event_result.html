@@ -15,6 +15,24 @@
                     <object class="list_item__delete"><a href="{% url 'delete-check-list-position' %}?control_event_position_id={{r.id}}&control_event_id={{control_event_id}}">x</a></object>
                 </div>
                 {% endfor %}
+                <div class="check_list__calculation">
+                    <div class="check_list__calculation__card">
+                        <p class="check_list__calculation__card__title">Общий расчет:</p>
+                        <p>Количество баллов по всем вопросам: {{calculation.all_questions_score}}</p>
+                        <p>Количество баллов не проверенных вопросов: {{calculation.non_checked_score}}</p>
+                        <p>Количество баллов выполненных вопросов: {{calculation.raw_score}}</p>
+                        <p>Итог: ({{calculation.raw_score}} / ({{calculation.all_questions_score}} - {{calculation.non_checked_score}})) * 100 = {{calculation.score}}</p>
+                    </div>
+                    {% for employee, score in employee_count_score.items %}
+                    <div class="check_list__calculation__card">
+                        <p class="check_list__calculation__card__title">{{employee}}:</p>
+                        <p>Количество баллов по всем вопросам: {{score.all_questions_score}}</p>
+                        <p>Количество баллов не проверенных вопросов: {{score.non_checked_score}}</p>
+                        <p>Количество баллов выполненных вопросов: {{score.raw_score}}</p>
+                        <p>Итог: ({{score.raw_score}} / ({{score.all_questions_score}} - {{score.non_checked_score}})) * 100 = {{score.score}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
 {% endblock %}
 {% block aside %}
@@ -25,7 +43,7 @@
         {% for employee, score in employee_count_score.items %}
         <div class="right_column__common-information">
             <div class="right_column__common-information__description">{{employee}}</div>
-            <div class="right_column__common-information__result"><span class="score">{{score}}</span></div>
+            <div class="right_column__common-information__result"><span class="score">{{score.score}}</span></div>
         </div>
         {% endfor %}
         <a class="right-column__btn" href="{% url 'download_check_list' control_event_id %}">

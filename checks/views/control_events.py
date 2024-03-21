@@ -90,6 +90,7 @@ class ControlEventView(View):
             'employee_count_score': new_counter.employee_count_score(),
             'status': new_counter.completeness_check(),
             'revizor': revizor,
+            'calculation': new_counter.getCalculation()
         }
         
         return render(request=request, context=context, template_name=self.template_name)

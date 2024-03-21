@@ -763,3 +763,29 @@ input[type='radio'] {
     margin: 5px;
     color: #425342;
 }
+
+.check_list__calculation {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2em;
+}
+
+.check_list__calculation__card {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    border: 1px solid gray;
+    border-radius: 10px;
+    background-color: #f2f5f2;
+    padding: 10px;
+    margin: 10px;
+}
+
+.check_list__calculation__card p {
+    margin: 0;
+    font-size: 0.6em;
+}
+
+.check_list__calculation__card__title {
+    font-weight: bold;
+}
