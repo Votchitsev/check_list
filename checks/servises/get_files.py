@@ -90,7 +90,7 @@ class MainReport:
         for i in control_events:
             counter = NewCounter(i.id)
             employee_results = counter.employee_count_score()
-            
+
             column = 0
 
             worksheet.write(row, column, str(i.date.strftime("%d.%m.%Y")))
@@ -109,7 +109,7 @@ class MainReport:
             column += 1
 
             for employee_result in employee_results.values():
-                worksheet.write(row, column, employee_result)
+                worksheet.write(row, column, employee_result["score"])
                 column += 1
 
             worksheet.write(row, column, str(counter.is_overdue_food()))
