@@ -287,3 +287,15 @@ class NewCounter:
                 return 'Нет'
         except IndexError:
             return '-'
+
+    def is_overdue_retail_food(self):
+        try:
+            overdue_food_questions = self.result_object.filter(question__for_expired_retail_product=True)
+
+            for question in overdue_food_questions:
+                if str(question.grade) == 'Нет':
+                    return 'Да'
+
+            return 'Нет'
+        except IndexError:
+            return '-'

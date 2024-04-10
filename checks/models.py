@@ -32,6 +32,7 @@ class Question(models.Model):
     text = models.TextField(null=False)
     significance_score = models.IntegerField(null=False)
     parent_question = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='child_question', blank=True)
+    for_expired_retail_product = models.BooleanField(default=False, null=True, verbose_name='Для просроченной продукции торгово-розничной сети')
 
     def __str__(self):
         return self.text

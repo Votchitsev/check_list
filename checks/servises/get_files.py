@@ -67,7 +67,18 @@ class MainReport:
         worksheet = workbook.add_worksheet()
         employee_positions = EmployeePosition.objects.all()
 
-        column_headers = ['Дата', 'Объект', 'Муниципалитет', 'Оценка', 'Баллы'] + [position.position for position in employee_positions] +  ['Наличие просроченной продукции', 'Наличие недоброкачественной продукции']
+        column_headers = [
+            'Дата',
+            'Объект',
+            'Муниципалитет',
+            'Оценка',
+            'Баллы'
+        ] + [position.position for position in employee_positions] + [
+            'Наличие просроченной продукции',
+            'Наличие недоброкачественной продукции',
+            'Наличие просроченной продукции в буфете',
+        ]
+
         row = 0
 
         for index, header in enumerate(column_headers):
@@ -116,6 +127,9 @@ class MainReport:
             column += 1
 
             worksheet.write(row, column, str(counter.is_poor_quality()))
+            column += 1
+
+            worksheet.write(row, column, str(counter.is_overdue_retail_food()))
             row += 1
 
         workbook.close()
