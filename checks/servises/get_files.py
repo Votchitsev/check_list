@@ -101,7 +101,6 @@ class MainReport:
         for i in control_events:
             counter = NewCounter(i.id)
             employee_results = counter.employee_count_score()
-            counter.is_overdue_retail_food()
 
             column = 0
 

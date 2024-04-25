@@ -255,7 +255,7 @@ class NewCounter:
 
     def is_overdue_food(self):
         try:
-            overdue_food_questions = self.result_object.filter(question_id__in=[33, 71])
+            overdue_food_questions = self.result_object.filter(question_id__in=[33])
 
             for question in overdue_food_questions:
 
