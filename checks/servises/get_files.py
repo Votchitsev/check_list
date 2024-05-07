@@ -39,7 +39,7 @@ class CheckListReport:
 
         for key, value in employee_results.items():
             worksheet.write(
-                row, 0, f"Оценка {key}: {value['score']} балла(-ов)"
+                row, 0, f"Оценка {key}: {value} балла(-ов)"
             )
 
             row += 1
