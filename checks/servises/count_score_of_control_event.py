@@ -2,6 +2,7 @@ import math
 from django.db.models import F
 from checks.models import Result, Question, EmployeePosition, EmployeePositionQuestion
 from checks.servises.get_relational_questions import validate_form
+from datetime import datetime
 
 
 class Counter:
@@ -257,8 +258,13 @@ class NewCounter:
         else:
             return '✗'
 
-    def common_grade(self):
-        if self.count_score() <= 80 or self.is_overdue_food() == 'Да':
+    def common_grade(self, date):
+        """Новый порог низшей оценки, который применятся с 2024-09-01"""
+        is_new_method = date >= datetime.strptime('2024-09-01', '%Y-%m-%d').date()
+
+        lower_grade_limit = 81 if is_new_method else 80
+
+        if self.count_score() <= lower_grade_limit or self.is_overdue_food() == 'Да':
             return 'Неудовлетворительно'
         elif 80 < self.count_score() < 95:
             return 'Удовлетворительно'

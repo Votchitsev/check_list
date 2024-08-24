@@ -113,7 +113,7 @@ class MainReport:
             worksheet.write(row, column, str(i.object.location))
             column += 1
 
-            worksheet.write(row, column, counter.common_grade())
+            worksheet.write(row, column, counter.common_grade(i.date))
             column += 1
 
             worksheet.write(row, column, counter.count_score())
