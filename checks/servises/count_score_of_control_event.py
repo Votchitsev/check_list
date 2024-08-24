@@ -1,3 +1,4 @@
+from datetime import datetime
 import math
 from django.db.models import F
 from checks.models import Result, Question, EmployeePosition, EmployeePositionQuestion
@@ -190,7 +191,7 @@ class NewCounter:
             return int(math.ceil((score / (score_of_all_questions - score_of_not_checked_questions)) * 100))
         except ZeroDivisionError:
             return 0
-    
+
     def employee_count_score(self):
         employee_questions = EmployeePositionQuestion.objects.all()
         employees = EmployeePosition.objects.all()
@@ -243,8 +244,12 @@ class NewCounter:
         else:
             return '✗'
 
-    def common_grade(self):
-        if self.count_score() <= 80 or self.is_overdue_food() == 'Да':
+    def common_grade(self, control_date):
+        '''Новый порог низшей оценки, который применятся с 2024-09-01'''
+        is_new_method = control_date >= datetime.strptime('2024-09-01', '%Y-%m-%d').date()
+        lower_grade_limit = 81 if is_new_method else 80
+
+        if self.count_score() <= lower_grade_limit or self.is_overdue_food() == 'Да':
             return 'Неудовлетворительно'
         elif 80 < self.count_score() < 95:
             return 'Удовлетворительно'
